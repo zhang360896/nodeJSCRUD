@@ -1,39 +1,49 @@
-var http = require("http"),  
-    mongo = require("mongodb"),  
-    url = require("url"),  
-    querystring = require("querystring");  
-      
-http.createServer(function (req, res) {  
-var db = new mongo.Db("test", new mongo.Server('127.0.0.1', 27017, {auto_reconnect:true}), {safe: true});  
-    db.open(function () {  
-        db.collection("user", function (err, collection) {  
-  
-            /* 获取GET请求从参数 加入user表 
-            collection.insert({'name':querystring.parse(url.parse(req.url).query)['name'],'pwd':querystring.parse(url.parse(req.url).query)['pwd']},function(err,result){ 
-            res.writeHead(200); 
-            res.end(JSON.stringify(result)); 
-            });*/  
-  
-  
-            //批量插入  
-            var temp1 = { name: "11", pwd: "11" };  
-            var temp2 = { name: "22", pwd: "22" };  
-            collection.insert([temp1, temp2], { safe: true }, function (err,result) {});  
-  
-            //按条件查询  
-            //collection.find({ 'name': querystring.parse(url.parse(req.url).query)['name'] }).toArray(function (err, items) {});  
-              
-            //获取所有数据  
-            collection.find().toArray(function (err, items) {  
-                if (items.length > 0) {  
-                    res.writeHead(200);  
-                    res.end(JSON.stringify(items));  
-                } else {  
-                    res.writeHead(200);  
-                    var obj = { value: "error" };  
-                    res.end(JSON.stringify(obj));  
-                }  
-            });  
-        });  
-    });  
-}).listen(8888);  
+var mongoose = require('mongoose');  
+mongoose.connect('mongodb://localhost/test'); //连接到一个test的数据库  
+/**
+&nbsp;* Module dependencies.
+&nbsp;*/
+
+var express = require('express')
+	, routes = require('./routes')
+	, user = require('./routes/user')
+	, http = require('http')
+	, path = require('path')
+	, mongoose = require('mongoose');   //1
+
+
+var app = express();
+
+
+// all environments
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(app.router);
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+// development only
+if ('development' == app.get('env')) {
+	app.use(express.errorHandler());
+}
+
+
+app.get('/', routes.index);
+app.get('/log',routes.login);
+app.post('/log',routes.doLogin);
+app.get('/reg',routes.reg);
+app.post('/reg',routes.doReg);
+
+
+//mongoose
+mongoose.connect('mongodb://localhost/test_db');  //2
+
+
+http.createServer(app).listen(app.get('port'), function(){
+	console.log('Express server listening on port ' + app.get('port'));
+});

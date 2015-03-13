@@ -1,10 +1,47 @@
-var express = require('express');
-var router = express.Router();
+var User = require('../models/user');
+/*
+ * GET home page.
+ */
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-	console.log('index');
-  res.render('index', { title: 'Express' });
-});
+exports.index = function(req, res){
+  User.find({}, function (err,users) {
+      res.render('index', { title: 'Express',users:users });
+  });
+};
+exports.login=function(req,res){
+    res.render('log',{title:'Login Page'});
+} ;
+exports.doLogin=function(req,res){
+    var user = req.body.user;
+    User.find(user,function(err,docs){
+        if(!err){
+            if(docs!=''){
+                console.log(docs);                
+                return res.redirect('/');
+            } else{
+                console.log('用户名或密码不正确');
+                return res.redirect('/log');
+            }
 
-module.exports = router;
+        }else{
+            console.log("Something happend.");
+        }
+    })
+};
+exports.reg=function(req,res){
+    res.render('reg',{title:'Register Page'});
+};
+exports.doReg=function(req,res){
+    var user = new User({
+    	name:req.body['username'],
+    	password:req.body['password']
+    });
+    user.save(function (err, user) {
+        if(!err) {
+            console.log(user);
+            console.log('the insert data is'+user);
+            res.redirect('/')
+        }
+    });
+    
+};
