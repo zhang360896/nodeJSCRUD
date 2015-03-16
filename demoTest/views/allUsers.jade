@@ -88,8 +88,9 @@ html(lang='en')
                   th Actions
               |     
               tbody
-                tr
-                  td David R
+                each user in users
+                 tr
+                  td= user.name
                   |         
                   td.center 2012/01/01
                   |         
@@ -134,96 +135,6 @@ html(lang='en')
                       i.glyphicon.glyphicon-trash.icon-white
                       |                 Delete
                 |     
-                tr
-                  td Jack Chris
-                  |         
-                  td.center 2012/01/01
-                  |         
-                  td.center Member
-                  |         
-                  td.center
-                    span.label-success.label.label-default Active
-                  |         
-                  td.center
-                    a.btn.btn-success(href='#')
-                      i.glyphicon.glyphicon-zoom-in.icon-white
-                      |                 View
-                    |             
-                    a.btn.btn-info(href='#')
-                      i.glyphicon.glyphicon-edit.icon-white
-                      |                 Edit
-                    |             
-                    a.btn.btn-danger(href='#')
-                      i.glyphicon.glyphicon-trash.icon-white
-                      |                 Delete
-                |     
-                tr
-                  td Muhammad Usman
-                  |         
-                  td.center 2012/01/01
-                  |         
-                  td.center Member
-                  |         
-                  td.center
-                    span.label-success.label.label-default Active
-                  |         
-                  td.center
-                    a.btn.btn-success(href='#')
-                      i.glyphicon.glyphicon-zoom-in.icon-white
-                      |                 View
-                    |             
-                    a.btn.btn-info(href='#')
-                      i.glyphicon.glyphicon-edit.icon-white
-                      |                 Edit
-                    |             
-                    a.btn.btn-danger(href='#')
-                      i.glyphicon.glyphicon-trash.icon-white
-                      |                 Delete
-                |     
-                tr
-                  td Sheikh Heera
-                  |         
-                  td.center 2012/02/01
-                  |         
-                  td.center Staff
-                  |         
-                  td.center
-                    span.label-default.label.label-danger Banned
-                  |         
-                  td.center
-                    a.btn.btn-success(href='#')
-                      i.glyphicon.glyphicon-zoom-in.icon-white
-                      |                 View
-                    |             
-                    a.btn.btn-info(href='#')
-                      i.glyphicon.glyphicon-edit.icon-white
-                      |                 Edit
-                    |             
-                    a.btn.btn-danger(href='#')
-                      i.glyphicon.glyphicon-trash.icon-white
-                      |                 Delete
-                |     
-                tr
-                  td Helen Garner
-                  |         
-                  td.center 2012/02/01
-                  |         
-                  td.center Staff
-                  |         
-                  td.center
-                    span.label-default.label.label-danger Banned
-                  |         
-                  td.center
-                    a.btn.btn-success(href='#')
-                      i.glyphicon.glyphicon-zoom-in.icon-white
-                      |                 View
-                    |             
-                    a.btn.btn-info(href='#')
-                      i.glyphicon.glyphicon-edit.icon-white
-                      |                 Edit
-                    |             
-                    a.btn.btn-danger(href='#')
-                      i.glyphicon.glyphicon-trash.icon-white
-                      |                 Delete
+                
       // /span
     // /row

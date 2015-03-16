@@ -9,7 +9,6 @@ router.get('/', function(req, res, next) {
 	console.log('in user');
 	//var fn = jade.compile('div #{course}',{});
 	//var html = jade.renderFile('./views/error.jade', {course: 'jade renderFile', pretty: true});
-	res.render('testView', { title: 'Express' });
 	//res.send(html);
 	//res.end();
 });
