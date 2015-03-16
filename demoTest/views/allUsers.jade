@@ -46,11 +46,27 @@ html(lang='en')
     script(src='/charisma-master/bower_components/jquery/jquery.min.js')
     // The HTML5 shim, for IE6-8 support of HTML5 elements
     //if lt IE 9
-      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
       // [endif]
     // The fav icon
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
   body
+    script.
+      $("#delUser").click(function(uid){
+		    $.ajax({
+                     url:'/crud/delUser',
+                     type:'post',
+                     data: 'userId=' + uid,
+                     dataType:'xml',
+                     success:function(data){
+                         alert('删除成功');
+                         location.reload();
+                     },
+                     error:function(){
+                         alert('系统出错');
+                     }
+            });
+		};
     .row
       .box.col-md-12
         .box-inner
@@ -90,7 +106,7 @@ html(lang='en')
               tbody
                 each user in users
                  tr
-                  td= user.name
+                  td= user.id
                   |         
                   td.center 2012/01/01
                   |         
@@ -107,10 +123,10 @@ html(lang='en')
                     a.btn.btn-info(href='#')
                       i.glyphicon.glyphicon-edit.icon-white
                       |                 Edit
-                    |             
-                    a.btn.btn-danger(href='#')
-                      i.glyphicon.glyphicon-trash.icon-white
-                      |                 Delete
+                    |     
+                      a.btn.btn-danger#delUser
+                        i.glyphicon.glyphicon-trash.icon-white
+                        |                 Delete
                 |     
                 tr
                   td Chris Jack

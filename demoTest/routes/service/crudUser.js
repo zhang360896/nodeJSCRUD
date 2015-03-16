@@ -1,12 +1,14 @@
-var User = require('../models/user');
+var User = require('../../models/user');
 /*
  * GET home page.
  */
 
-exports.doDel = function(req, res){
-  User.find({}, function (err,users) {
-	  res.render('allUsers', { title: 'Express',users:users });
-  });
+exports.doDeluser = function(req, res, userId){
+	console.log('delete'+userId+' sucessfully');
+//  User.remove({"id":userId}, function (err,users) {
+//	  console.log('deleted sucessfully');
+//	  res.render('allUsers', { title: 'Express',users:users });
+//  });
 };
 exports.doReg=function(req,res){
     var user = new User({

@@ -3,7 +3,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , mongoose = require('mongoose')
-  , dele = require('./routes/service');   //1
+  //, crudRoutesMap = require('./routes/crudRoutesMap');   //1
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -31,8 +31,7 @@ app.get('/log',routes.login);
 app.post('/log',routes.doLogin);
 app.get('/reg',routes.reg);
 app.post('/reg',routes.doReg);
-
-
+//app.get('/crud/delUser',crudRoutesMap.doDeluser);
 //mongoose
 mongoose.connect('mongodb://localhost/test');  //2
 
@@ -41,15 +40,6 @@ http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 module.exports = app;
-
-
-///数据库处理
-/**
- * Module dependencies.
- */
-
-
-
 var app = express();
 
 
