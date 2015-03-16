@@ -67,7 +67,7 @@ app.post('/reg',routes.doReg);
 
 
 //mongoose
-mongoose.connect('mongodb://localhost/test_db');  //2
+mongoose.connect('mongodb://localhost/test');  //2
 
 
 http.createServer(app).listen(app.get('port'), function(){

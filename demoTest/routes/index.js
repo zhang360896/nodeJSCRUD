@@ -7,6 +7,7 @@ exports.index = function(req, res){
   User.find({}, function (err,users) {
       res.render('index', { title: 'Express',users:users });
   });
+  
 };
 exports.login=function(req,res){
     res.render('log',{title:'Login Page'});
