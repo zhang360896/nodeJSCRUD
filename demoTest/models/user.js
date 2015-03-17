@@ -8,5 +8,5 @@ var UserSchema = new Schema({
     , role: String
     , status: String
 });
-console.log('mongoose model is '+UserSchema+' '+UserSchema.name);
+//console.log('mongoose model is '+UserSchema+' '+UserSchema.name);
 module.exports = mongoose.model('User', UserSchema);

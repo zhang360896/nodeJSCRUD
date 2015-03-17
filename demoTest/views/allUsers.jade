@@ -50,23 +50,23 @@ html(lang='en')
       // [endif]
     // The fav icon
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
+    script(type="text/javascript").
+        function delUser(userId){
+            alert(userId);
+            $.ajax({
+                type : "POST",
+                url : "/crud/delUser",
+                data : {
+                    "userId" : userId
+                },
+                dataType : "JSONP",
+                success : function(data) {
+                    alert('succeed');
+                    window.location.reload(true);
+                }
+            })
+        }
   body
-    script.
-      $("#delUser").click(function(uid){
-		    $.ajax({
-                     url:'/crud/delUser',
-                     type:'post',
-                     data: 'userId=' + uid,
-                     dataType:'xml',
-                     success:function(data){
-                         alert('删除成功');
-                         location.reload();
-                     },
-                     error:function(){
-                         alert('系统出错');
-                     }
-            });
-		};
     .row
       .box.col-md-12
         .box-inner
@@ -104,36 +104,12 @@ html(lang='en')
                   th Actions
               |     
               tbody
-                each user in users
-                 tr
-                  td= user.id
+                  tr
+                  td Mick
                   |         
-                  td.center 2012/01/01
+                  td.center 2015/03/17
                   |         
-                  td.center Member
-                  |         
-                  td.center
-                    span.label-success.label.label-default Active
-                  |         
-                  td.center
-                    a.btn.btn-success(href='#')
-                      i.glyphicon.glyphicon-zoom-in.icon-white
-                      |                 View
-                    |             
-                    a.btn.btn-info(href='#')
-                      i.glyphicon.glyphicon-edit.icon-white
-                      |                 Edit
-                    |     
-                      a.btn.btn-danger#delUser
-                        i.glyphicon.glyphicon-trash.icon-white
-                        |                 Delete
-                |     
-                tr
-                  td Chris Jack
-                  |         
-                  td.center 2012/01/01
-                  |         
-                  td.center Member
+                  td.center Admin
                   |         
                   td.center
                     span.label-success.label.label-default Active
@@ -147,10 +123,32 @@ html(lang='en')
                       i.glyphicon.glyphicon-edit.icon-white
                       |                 Edit
                     |             
-                    a.btn.btn-danger(href='#')
+                    a.btn.btn-danger(onclick="alert('test')")
                       i.glyphicon.glyphicon-trash.icon-white
                       |                 Delete
-                |     
-                
-      // /span
-    // /row
+                    |     
+               - each user in users
+                tr
+                  td= user.name
+                  |         
+                  td.center= user.regDate
+                  |         
+                  td.center= user.id
+                  |         
+                  td.center
+                    span.label-success.label.label-default Active
+                  |         
+                  td.center
+                    a.btn.btn-success(href='#')
+                      i.glyphicon.glyphicon-zoom-in.icon-white
+                      |                 View
+                    |             
+                    a.btn.btn-info(href='#')
+                      i.glyphicon.glyphicon-edit.icon-white
+                      |                 Edit
+                    |             
+                    a.btn.btn-danger(onclick="delUser('#{user.id}')")
+                      i.glyphicon.glyphicon-trash.icon-white
+                      |                 Delete
+                    |     
+            

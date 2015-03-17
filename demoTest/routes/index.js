@@ -34,7 +34,8 @@ exports.reg=function(req,res){
 exports.doReg=function(req,res){
     var user = new User({
     	name:req.body['username'],
-    	password:req.body['password']
+    	regDate:req.body['regDate'],
+    	role:req.body['role'],
     });
     user.save(function (err, user) {
         if(!err) {

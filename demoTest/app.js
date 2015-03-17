@@ -3,7 +3,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , mongoose = require('mongoose')
-  //, crudRoutesMap = require('./routes/crudRoutesMap');   //1
+  , crudRoutes = require('./routes/service/crudUser');   //1
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -31,6 +31,9 @@ app.get('/log',routes.login);
 app.post('/log',routes.doLogin);
 app.get('/reg',routes.reg);
 app.post('/reg',routes.doReg);
+
+//设置CRUD的操作路由
+app.post('/crud/delUser', crudRoutes.doDeluser);
 //app.get('/crud/delUser',crudRoutesMap.doDeluser);
 //mongoose
 mongoose.connect('mongodb://localhost/test');  //2
