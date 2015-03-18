@@ -1,0 +1,99 @@
+
+<html>
+  <body></body>
+</html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>&#x9;
+    <title>Free HTML5 Bootstrap Admin Template</title>&#x9;
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>&#x9;
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template."/>&#x9;
+    <meta name="author" content="Muhammad Usman"/>
+    <!-- The styles-->
+    <link id="bs-css" href="/charisma-master/css/bootstrap-cerulean.min.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/css/charisma-app.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/bower_components/fullcalendar/dist/fullcalendar.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print"/>&#x9;
+    <link href="/charisma-master/bower_components/chosen/chosen.min.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/bower_components/colorbox/example3/colorbox.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/bower_components/responsive-tables/responsive-tables.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/css/jquery.noty.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/css/noty_theme_default.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/css/elfinder.min.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/css/elfinder.theme.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/css/jquery.iphone.toggle.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/css/uploadify.css" rel="stylesheet"/>&#x9;
+    <link href="/charisma-master/css/animate.min.css" rel="stylesheet"/>
+    <!-- jQuery-->
+    <script src="/charisma-master/bower_components/jquery/jquery.min.js"></script>
+    <!-- The HTML5 shim, for IE6-8 support of HTML5 elements-->
+    <!--if lt IE 9-->
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+      <!-- [endif]-->
+    </script>
+    <!-- The fav icon-->
+    <link rel="shortcut icon" href="/charisma-master/img/favicon.ico"/>
+    <script type="text/javascript">
+      function delUser(userId){
+          alert(userId);
+          $.ajax({
+              type : "POST",
+              url : "/crud/delUser",
+              data : {
+                  "userId" : userId
+              },
+              dataType : "JSONP",
+              success : function(data) {
+                  alert('succeed');
+                  window.location.reload(true);
+              }
+          })
+      }
+    </script>
+  </head>
+  <body>
+    <div id="DataTables_Table_0_length" class="dataTables_length">
+        <label>
+            <select size="1" name="DataTables_Table_0_length" aria-controls="DataTables_Table_0">
+                <option value="10" selected="selected">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select> records per page
+        </label>
+    </div>
+    <div class="row">
+      <div class="box col-md-12">
+        <div class="box-inner">
+          <div data-original-title="" class="box-header well">
+            <h2><i class="glyphicon glyphicon-user"></i>  YING XI Demo</h2>        
+            <div class="box-icon"><a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>            <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>            <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a></div>
+          </div>    
+          <div class="box-content">
+            <div class="alert alert-info">For help with such table please check <a href="http://datatables.net/" target="_blank">http://datatables.net/</a></div>    
+            <table class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+              <thead>
+                <tr>
+                  <th>Username</th>        
+                  <th>Date registered</th>        
+                  <th>Role</th>        
+                  <th>Status</th>        
+                  <th>Actions</th>
+                </tr>
+              </thead>    
+              <tbody>
+                <tr></tr>
+                <td>Mick</td>        
+                <td class="center">2015/03/17</td>        
+                <td class="center">Admin</td>        
+                <td class="center"><span class="label-success label label-default">Active</span></td>        
+                <td class="center"><a href="#" class="btn btn-success"><i class="glyphicon glyphicon-zoom-in icon-white"></i>                View</a>            <a href="#" class="btn btn-info"><i class="glyphicon glyphicon-edit icon-white"></i>                Edit</a>            <a onclick="delUser()" class="btn btn-danger"><i class="glyphicon glyphicon-trash icon-white"></i>                Delete</a>    </td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
