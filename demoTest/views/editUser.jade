@@ -1,0 +1,9 @@
+html
+  body
+    form(action='/crud/updateUser', method='post')
+      input(type='hidden', value='#{user.id}', name='userId')    
+      input(type='text', value='#{user.name}', name='username')
+      input(type='text', value='#{user.regDate}', name='regDate')
+      input(type='text', value='#{user.role}', name='role')
+      //input(type='text', name='status')
+      input(type='submit', value='Confirm')
