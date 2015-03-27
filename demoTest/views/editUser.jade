@@ -1,4 +1,22 @@
 html
+  head
+    script(type="text/javascript").
+      $(function(){
+          var M = Backbone.Model.extend({
+                      defaults : {
+                          name : "harrychang",
+                          register : "date"
+                      },
+                      initialize : function(){
+                          this.on('change:name', function(){
+                                alert(123);
+                          });
+                      }
+                  });
+          var model = new M;
+          model.set('name', 'hi');
+        }
+      )
   body
     form(action='/crud/updateUser', method='post')
       input(type='hidden', value='#{user.id}', name='userId')    

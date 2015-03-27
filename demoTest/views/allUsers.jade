@@ -58,10 +58,13 @@ html(lang='en')
     script(src='/charisma-master/js/jquery.history.js')
     // application script for Charisma demo
     script(src='/charisma-master/js/charisma.js')
-    // The fav icon
+    // backbone's scripts
+    script(src='/javascripts/underscore-min.js')
+    script(src='/javascripts/backbone-min.js')
+    script(src='/javascripts/backbone.stickit.min.js')
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
     script(type="text/javascript").
-        function delUser(userId){
+        function delUser1(userId){
             alert(userId);
             $.ajax({
                 type : "POST",
@@ -76,6 +79,15 @@ html(lang='en')
             })
             window.location.reload(true);
         }
+    script(type="text/javascript").
+      $(function(){
+            for (var i = 0; i < 2; i ++){
+                var user = users[i];
+                alert('#{user.id)');
+            }
+            
+        }
+      )
   body
     .row
       .box.col-md-12
