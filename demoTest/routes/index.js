@@ -5,7 +5,7 @@ var User = require('../models/user');
 
 exports.index = function(req, res){
   User.find({}, function (err,users) {
-	  res.render('allUsers', { title: 'Express',users:users });
+	  res.render('editUser', { title: 'Express',users:users });
   });
 };
 exports.login=function(req,res){

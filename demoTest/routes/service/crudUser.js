@@ -32,15 +32,15 @@ exports.doUpdateUser = function(req, res){
 exports.doDeluser = function(req, res){
 	console.log('backbone:'+req.body.title);
 	//console.log('delete'+req.body.userId+' sucessfully');
-//	User.remove({_id:req.body.userId},function(err){ 
-//		if (!err){
-//		    console.log('deleted:'+req.body.userId);
-//	    }
-//		else {
-//			console.log('delete failed');
-//		}
-//	});
-//	User.find({}, function (err,users) {
-//		  res.render('allUsers', { title: 'Express',users:users });
-//	});
+	User.remove({_id:req.body.userId},function(err){ 
+		if (!err){
+		    console.log('deleted:'+req.body.userId);
+	    }
+		else {
+			console.log('delete failed');
+		}
+	});
+	User.find({}, function (err,users) {
+		  res.render('editUser', { title: 'Express',users:users });
+	});
 };
