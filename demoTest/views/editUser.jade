@@ -57,6 +57,92 @@ html
     script(src='/javascripts/backbone-min.js')
     script(src='/javascripts/backbone.stickit.min.js')
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
+    script.
+      var UserFactory = Backbone.Model.extend({
+                  defaults : {
+                      name: "zhang"
+                    , regDate: "2012/02/01"
+                    , role: "Admin"
+                    , status: "activated"
+                  },
+                  initialize : function(){
+                      this.on('change:name', function(){
+                            alert(123);
+                      });
+                  }
+          });
+      var C = Backbone.Collection.extend({
+                    initialize : function(){
+                                    this.on('reset', function(){
+                                            alert(123);
+                                    });
+                                 },
+                    url:'/'
+              });
+      var ListView = Backbone.View.extend({
+                        tbd: $('tbody'),
+                        h2: $('h2'),
+                        initialize: function(){
+                            _.bindAll(this, 'render');
+                        },
+                        addUsr:
+                            function addUsr(){
+                                  //alert('xiba');
+                                  alert('xiba');
+                                  //$('#addTh').removeClass();
+                                  $('tbody').append(
+                                    "<tr class='even'>"
+                                      +"<td class=' sorting_1'>"
+                                        //+"<div class='form-group has-success col-md-4'>"
+                                            +"<input type='text' class='form-control' id='newUsername'>"
+                                        //+"</div>"
+                                      +"</td>"
+                                      +"<td class='center '>"
+                                            +"<input type='text' class='form-control' id='newDate'>"
+                                      +"</td>"
+                                      +"<td class='center '>"
+                                            +"<input type='text' class='form-control' id='newRole'>"
+                                      +"</td>"
+                                      +"<td class='center '>"
+                                        +"<span class='label-default label label-danger'>Banned</span>"
+                                      +"</td>"
+                                      +"<td class='center'>"
+                                       +"<a class ='btn btn-info' onclick='confirmAdd()'>"
+                                          +"Confirm"
+                                       +"</a>"
+                                      +"</td>"
+                                      +"<td class='center'>"
+                                        +"<i class='glyphicon glyphicon-minus'>"
+                                      +"</td>"
+                                    +"</tr>"
+                                  );
+                                 for (var i = 1; i < 3; i ++){
+                                    var newUser = new UserFactory;
+                                 //   newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
+                                    //alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
+                                 }
+                            }
+                        });
+      //function addUsr()
+      //{
+      //      var view = new ListView();
+      //      view.render();
+      //}
+      $(function(){
+          $(document).delegate('.glyphicon-minus', 'click', function() {
+                var tr = $(this).parent().parent();
+                tr.remove();
+          });
+          Backbone.sync = function(method, model){
+                        alert(method+":" + JSON.stringify(model));
+          };
+          var view = new ListView();
+          $("#test").on("click", function(){
+                    
+                    view.addUsr();
+          })
+        }
+      )
     script(type="text/javascript").
         function delUser(userId){
             alert(userId);
@@ -73,83 +159,69 @@ html
             })
             window.location.reload(true);
         }
-    script(type="text/javascript").
-      var UserFactory = Backbone.Model.extend({
-                      defaults : {
-                          name: "zhang"
-                        , regDate: "2012/02/01"
-                        , role: "Admin"
-                        , status: "activated"
-                      },
-                      initialize : function(){
-                          this.on('change:name', function(){
-                                alert(123);
-                          });
-                      }
-                  });
-      Backbone.sync = function(method, model){
-                    alert(method+":" + JSON.stringify(model));
-      };
-      var C = Backbone.Collection.extend({
-            initialize : function(){
-                    this.on('reset', function(){
-                        alert(123);
-                    });
-                },
-            url:'/'
-      });
-      var user = new UserFactory;
-      var models = new C;
-      
-      function confirmAdd(){
-                alert('clicked');
-                $.ajax({
-                    type : "POST",
-                    url : "/reg",
-                    data : {
-                        username : user.get('name'),
-                        regDate  : user.get('regDate'),
-                        role     : user.get('role')
-                    }
-                })
-      };
-      $(function(){
-         
-         var ListView = Backbone.View.extend({    
-                tbd: $('tbody'),
-                initialize: function(){
-                    _.bindAll(this, 'render');
-                },
-            render: 
-                function(model, num){
-                  $(this.tbd).append(
+        function addUser(){
+                  alert('xiba');
+                  $('#addTh').removeClass();
+                  $('tbody').append(
                     "<tr class='even'>"
-                      +"<td class=' sorting_1'>"+model.get('name')+"</td>"
-                      +"<td class='center '>"+model.get('regDate')+"</td>"
-                      +"<td class='center '>"+model.get('role')+"</td>"
+                      +"<td class=' sorting_1'>"
+                        //+"<div class='form-group has-success col-md-4'>"
+                            +"<input type='text' class='form-control' id='newUsername'>"
+                        //+"</div>"
+                      +"</td>"
+                      +"<td class='center '>"
+                            +"<input type='text' class='form-control' id='newDate'>"
+                      +"</td>"
+                      +"<td class='center '>"
+                            +"<input type='text' class='form-control' id='newRole'>"
+                      +"</td>"
                       +"<td class='center '>"
                         +"<span class='label-default label label-danger'>Banned</span>"
                       +"</td>"
                       +"<td class='center'>"
-                       +"<a class ='btn btn-info' onclick=confirmAdd()>"
+                       +"<a class ='btn btn-info' onclick='confirmAdd()'>"
                           +"Confirm"
-                        +"</a>"
+                       +"</a>"
                       +"</td>"
                       +"<td class='center'>"
                         +"<i class='glyphicon glyphicon-minus'>"
                       +"</td>"
                     +"</tr>"
                   );
+                 for (var i = 1; i < 3; i ++){
+                    var newUser = new UserFactory;
+                 //   newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
+                    //alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
                 }
-          });
-          var listView = new ListView();
-          $("#test").on("click", function(){
-                    //alert('clicked');
-                    listView.render(user,10);
-          });
-        }
-      )
-
+        };
+        function confirmAdd(){
+                 alert('xiba');
+                 
+                 for (var i = 1; i < 3; i ++){
+                    var newUser = new UserFactory;
+                 //   newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
+                    alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
+                }
+        };
+        $(function(){
+            $("#newConfirm").on("click", function(){
+                alert('confirmed');
+                //for (var i = 1; i < 3; i ++){
+               //     var newUser = new UserFactory;
+                //    newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
+               //     alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
+               // }
+               // $.ajax({
+                //    type : "POST",
+                //    url : "/reg",
+                //    data : {
+                //        username : user.get('name'),
+                //        regDate  : user.get('regDate'),
+                //        role     : user.get('role')
+                //    }
+               // })
+            });
+        })
   body
 
     .row
@@ -187,6 +259,8 @@ html
                     th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Role: activate to sort column ascending', style='width: 88px;') Role
                     th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Status: activate to sort column ascending', style='width: 100px;') Status
                     th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Actions: activate to sort column ascending', style='width: 351px;') Actions
+                    th#test
+                      i.glyphicon.glyphicon-plus.icon-white
                 |     
                 |     
                 tbody(role='alert', aria-live='polite', aria-relevant='all')
@@ -212,6 +286,10 @@ html
                       a.btn.btn-danger(href='#')
                         i.glyphicon.glyphicon-trash.icon-white
                         |                 Delete
+                    td.center
+                      i.glyphicon.glyphicon-minus
+                      |     
+                       
                    - each user in users
                     tr
                       td= user.name
@@ -236,7 +314,6 @@ html
                           i.glyphicon.glyphicon-trash.icon-white
                           |                 Delete
                         |   
-                  a.btn.btn-success#test
-                    i.glyphicon.glyphicon-plus.icon-white
-                    |                 ADD
-                    |  
+                      td.center
+                        i.glyphicon.glyphicon-minus
+                        |    
