@@ -60,14 +60,14 @@ html
     script.
       var UserFactory = Backbone.Model.extend({
                   defaults : {
-                      name: "zhang"
-                    , regDate: "2012/02/01"
-                    , role: "Admin"
-                    , status: "activated"
+                      name: ""
+                    , regDate: ""
+                    , role: ""
+                    , status: ""
                   },
                   initialize : function(){
                       this.on('change:name', function(){
-                            alert(123);
+                            alert("name changed");
                       });
                   }
           });
@@ -79,29 +79,40 @@ html
                                  },
                     url:'/'
               });
+      var AddCollectionFactory = Backbone.Collection.extend({
+                    initialize : function(){
+                                    this.on('reset', function(){
+                                            alert(123);
+                                    });
+                                 },
+                    url:'/'
+              });
+      var users = new AddCollectionFactory();
       var ListView = Backbone.View.extend({
                         tbd: $('tbody'),
                         h2: $('h2'),
                         initialize: function(){
                             _.bindAll(this, 'render');
                         },
+                        url:"/reg",
                         addUsr:
                             function addUsr(){
                                   //alert('xiba');
-                                  alert('xiba');
                                   //$('#addTh').removeClass();
+                                  var userAdded = new UserFactory();
+                                  alert(userAdded.get('id'));
                                   $('tbody').append(
                                     "<tr class='even'>"
                                       +"<td class=' sorting_1'>"
                                         //+"<div class='form-group has-success col-md-4'>"
-                                            +"<input type='text' class='form-control' id='newUsername'>"
+                                            +"<input type='text' class='form-control' name='newUsername'>"
                                         //+"</div>"
                                       +"</td>"
                                       +"<td class='center '>"
-                                            +"<input type='text' class='form-control' id='newDate'>"
+                                            +"<input type='text' class='form-control' name='newDate'>"
                                       +"</td>"
                                       +"<td class='center '>"
-                                            +"<input type='text' class='form-control' id='newRole'>"
+                                            +"<input type='text' class='form-control' name='newRole'>"
                                       +"</td>"
                                       +"<td class='center '>"
                                         +"<span class='label-default label label-danger'>Banned</span>"
@@ -116,29 +127,44 @@ html
                                       +"</td>"
                                     +"</tr>"
                                   );
+                                  users.add(userAdded);
                                  for (var i = 1; i < 3; i ++){
-                                    var newUser = new UserFactory;
+                                    //var newUser = new UserFactory;
                                  //   newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
                                     //alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
                                  }
                             }
                         });
-      //function addUsr()
-      //{
-      //      var view = new ListView();
-      //      view.render();
-      //}
+      
       $(function(){
+          //alert('stringify :' +JSON.stringify(title));
           $(document).delegate('.glyphicon-minus', 'click', function() {
                 var tr = $(this).parent().parent();
                 tr.remove();
           });
+          $(document).delegate(".form-control", 'click', function() {
+                alert('input');
+          });
           Backbone.sync = function(method, model){
-                        alert(method+":" + JSON.stringify(model));
+                    alert(method+":" + JSON.stringify(model));
+                    if (method == "create"){
+                        $.ajax({
+                            type : "POST",
+                            url : "/reg",
+                            data : {
+                                "name" : model.get('name'),
+                                "regDate" : model.get('regDate'),
+                                "role" : model.get('role')
+                            },
+                            dataType : "JSONP",
+                            success : function(data) {
+                                alert('succeed');
+                            }
+                        })
+                    }
           };
           var view = new ListView();
           $("#test").on("click", function(){
-                    
                     view.addUsr();
           })
         }
@@ -195,22 +221,25 @@ html
                 }
         };
         function confirmAdd(){
-                 alert('xiba');
-                 
-                 for (var i = 1; i < 3; i ++){
-                    var newUser = new UserFactory;
-                 //   newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
-                    alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
-                }
-        };
+                 alert('confirmed');
+                 var newUser = new UserFactory();
+                 //alert($(".form-control").eq(0).val());
+                 //newUser.set("name",$(.form-control").eq(0).val());
+                 newUser.set({name:$(".form-control").eq(0).val(),
+                            regDate:$(".form-control").eq(1).val(),
+                            role:$(".form-control").eq(2).val()
+                            });
+                 newUser.save();
+                 alert('new:'+newUser.get('id')+' '+newUser.get('name'));
+        }
         $(function(){
             $("#newConfirm").on("click", function(){
                 alert('confirmed');
-                //for (var i = 1; i < 3; i ++){
-               //     var newUser = new UserFactory;
-                //    newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
-               //     alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
-               // }
+                for (var i = 1; i < 3; i ++){
+                    //var newUser = new UserFactory;
+                    //newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
+                    alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
+                }
                // $.ajax({
                 //    type : "POST",
                 //    url : "/reg",

@@ -5,7 +5,7 @@ var User = require('../models/user');
 
 exports.index = function(req, res){
   User.find({}, function (err,users) {
-	  res.render('editUser', { title: 'Express',users:users });
+	  res.render('editUser', { title: 'Express',users:users,test:'stringify'});
   });
 };
 exports.login=function(req,res){
@@ -29,14 +29,17 @@ exports.doLogin=function(req,res){
     })
 };
 exports.reg=function(req,res){
-    res.render('reg',{title:'Register Page'});
+	console.log('the data are '+req.body.newUser);
+    //res.render('reg',{title:'Register Page'});
 };
 exports.doReg=function(req,res){
+	//console.log('the data are '+req.body.newUser);
     var user = new User({
-    	name:req.body['username'],
+    	name:req.body['name'],
     	regDate:req.body['regDate'],
     	role:req.body['role'],
     });
+    console.log('the data are '+user);
     user.save(function (err, user) {
         if(!err) {
             console.log(user);
