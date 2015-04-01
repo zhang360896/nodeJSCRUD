@@ -59,12 +59,14 @@ html
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
     script.
       var UserFactory = Backbone.Model.extend({
+                  idAttribute: "_id",
                   defaults : {
                       name: ""
                     , regDate: ""
                     , role: ""
                     , status: ""
                   },
+                  url:"/users",
                   initialize : function(){
                       this.on('change:name', function(){
                             alert("name changed");
@@ -93,6 +95,20 @@ html
                         h2: $('h2'),
                         initialize: function(){
                             _.bindAll(this, 'render');
+                            alert("view");
+                            //save all current user information in Model
+                            $(".curUserRow").each(function (){
+                                    //alert($(this).val());
+                                    var curUser = new UserFactory();
+                                    curUser.set("id", $(this).children().filter("input[type='hidden']").val());
+                                    curUser.set("name", $(this).children().filter(".userName").html());
+                                    curUser.set("regDate", $(this).children().filter(".userRegDate").html());
+                                    curUser.set("role", $(this).children().filter(".userRole").html());
+                                    //alert($(this).children().filter(".userRegDate").html());
+                                    alert(JSON.stringify(curUser));
+                                    curUser.save();
+                            });
+                            
                         },
                         url:"/reg",
                         addUsr:
@@ -320,12 +336,13 @@ html
                       |     
                        
                    - each user in users
-                    tr
-                      td= user.name
+                    tr.curUserRow
+                      input(type="hidden" value= user.id)
+                      td.userName= user.name
                       |         
-                      td.center= user.regDate
+                      td.userRegDate.center= user.regDate
                       |         
-                      td.center= user.id
+                      td.userRole.center= user.id
                       |         
                       td.center
                         span.label-success.label.label-default Active
