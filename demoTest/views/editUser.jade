@@ -69,7 +69,7 @@ html
                   url:"/users",
                   initialize : function(){
                       this.on('change:name', function(){
-                            alert("name changed");
+                            //alert("name changed");
                       });
                   }
           });
@@ -105,7 +105,7 @@ html
                                     curUser.set("regDate", $(this).children().filter(".userRegDate").html());
                                     curUser.set("role", $(this).children().filter(".userRole").html());
                                     //alert($(this).children().filter(".userRegDate").html());
-                                    alert(JSON.stringify(curUser));
+                                    //alert(JSON.stringify(curUser));
                                     curUser.save();
                             });
                             
@@ -143,6 +143,7 @@ html
                                       +"</td>"
                                     +"</tr>"
                                   );
+                                  //userAdded.save();
                                   users.add(userAdded);
                                  for (var i = 1; i < 3; i ++){
                                     //var newUser = new UserFactory;
@@ -159,15 +160,17 @@ html
                 tr.remove();
           });
           $(document).delegate(".form-control", 'click', function() {
-                alert('input');
+                //alert('input');
           });
           Backbone.sync = function(method, model){
-                    alert(method+":" + JSON.stringify(model));
-                    if (method == "create"){
+                    alert(method+":" + JSON.stringify(model.get('id')));
+                    if (method="create"){
+                        
                         $.ajax({
                             type : "POST",
                             url : "/reg",
                             data : {
+                                "id" : model.get('id'),
                                 "name" : model.get('name'),
                                 "regDate" : model.get('regDate'),
                                 "role" : model.get('role')
@@ -249,23 +252,7 @@ html
                  alert('new:'+newUser.get('id')+' '+newUser.get('name'));
         }
         $(function(){
-            $("#newConfirm").on("click", function(){
-                alert('confirmed');
-                for (var i = 1; i < 3; i ++){
-                    //var newUser = new UserFactory;
-                    //newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
-                    alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
-                }
-               // $.ajax({
-                //    type : "POST",
-                //    url : "/reg",
-                //    data : {
-                //        username : user.get('name'),
-                //        regDate  : user.get('regDate'),
-                //        role     : user.get('role')
-                //    }
-               // })
-            });
+            
         })
   body
 

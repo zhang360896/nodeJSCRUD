@@ -34,16 +34,22 @@ exports.reg=function(req,res){
 };
 exports.doReg=function(req,res){
 	//console.log('the data are '+req.body.newUser);
-    var user = new User({
+    var judID = req.body['id'];
+    console.log("the ID is:"+judID);
+    
+	var user = new User({
     	name:req.body['name'],
     	regDate:req.body['regDate'],
     	role:req.body['role'],
     });
+	if (typeof(judID) != "undefined"){
+		user._id = judID;
+	}
     console.log('the data are '+user);
     user.save(function (err, user) {
         if(!err) {
-            console.log(user);
-            console.log('the insert data is'+user);
+            //console.log(user);
+            //console.log('the insert data is'+user);
             res.redirect('/')
         }
     });
