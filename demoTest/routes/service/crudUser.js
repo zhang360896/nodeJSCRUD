@@ -11,18 +11,24 @@ exports.UpdateUser = function(req, res){
 	});
 };
 exports.doUpdateUser = function(req, res){
-	var userId = req.body['userId'];
+	var judID = req.body['id'];
+    console.log("the ID is:"+judID);
+    
 	var user = new User({
-		name:req.body['username'],
+		name:req.body['name'],
 		regDate:req.body['regDate'],
 		role:req.body['role']
 	})
+	if (typeof(judID) != "undefined"){
+		user._id = judID;
+	}
+    console.log('the data are '+user);
 	var update = {$set:{name:user.name, regDate:user.regDate, role:user.role}}
 		,options = {};
-	console.log('update'+req.body.userId+' sucessfully');
-	User.update({_id:userId}, update, options, function(err, user){
-		if (!err)console.log('update '+ userId + 'successfully');
-		else console.log('update'+userId+'failed');
+	console.log('update'+user._id+' sucessfully');
+	User.update({_id:user._id}, update, options, function(err, user){
+		if (!err)console.log('update '+ user._id + 'successfully');
+		else console.log('update'+user._id+'failed');
 	});
 	res.redirect("/");
 //	User.find({}, function (err,users) {

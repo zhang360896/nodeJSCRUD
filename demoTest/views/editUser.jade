@@ -58,8 +58,7 @@ html
     script(src='/javascripts/backbone.stickit.min.js')
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
     script.
-      $(function(){
-       var UserFactory = Backbone.Model.extend({
+      var UserFactory = Backbone.Model.extend({
                   idAttribute: "_id",
                   defaults : {
                       name: ""
@@ -74,29 +73,29 @@ html
                       });
                   }
           });
-      var C = Backbone.Collection.extend({
-                    initialize : function(){
-                                    this.on('reset', function(){
-                                            alert(123);
-                                    });
-                                 },
-                    url:'/'
-              });
-      var AddCollectionFactory = Backbone.Collection.extend({
-                    initialize : function(){
-                                    this.on('reset', function(){
-                                            alert(123);
-                                    });
-                                 },
-                    url:'/'
-              });
-      var users = new AddCollectionFactory();
-      var ListView = Backbone.View.extend({
+        var C = Backbone.Collection.extend({
+            initialize : function(){
+                            this.on('reset', function(){
+                                    alert(123);
+                            });
+                         },
+            url:'/'
+        });
+        var AddCollectionFactory = Backbone.Collection.extend({
+            initialize : function(){
+                            this.on('reset', function(){
+                                    alert(123);
+                            });
+                         },
+            url:'/'
+        });
+        var users = new AddCollectionFactory();
+        var ListView = Backbone.View.extend({
                         tbd: $('tbody'),
                         h2: $('h2'),
                         initialize: function(){
                             _.bindAll(this, 'render');
-                            alert("view");
+                            //alert("view");
                             //save all current user information in Model
                             $(".curUserRow").each(function (){
                                     //alert($(this).val());
@@ -106,28 +105,18 @@ html
                                     curUser.set("name", $(this).children().filter(".userName").html());
                                     curUser.set("regDate", $(this).children().filter(".userRegDate").html());
                                     curUser.set("role", $(this).children().filter(".userRole").html());
-                                    //alert($(this).children().filter(".userRegDate").html());
-                                    //alert(JSON.stringify(curUser));
-                                    //curUser.save();
                                     users.add(curUser);
-                                    alert(curUser.id);
-                                  alert('geted name :'+users.get(curUser.id).get('name'));
                             });
                             
                         },
                         url:"/reg",
                         addUsr:
                             function addUsr(){
-                                  //alert('xiba');
-                                  //$('#addTh').removeClass();
                                   var userAdded = new UserFactory();
-                                  alert(userAdded.get('id'));
-                                  $('tbody').append(
-                                    "<tr class='even'>"
+                                  $('tbody').parent().append(
+                                    "<tr>"
                                       +"<td class=' sorting_1'>"
-                                        //+"<div class='form-group has-success col-md-4'>"
                                             +"<input type='text' class='form-control' name='newUsername'>"
-                                        //+"</div>"
                                       +"</td>"
                                       +"<td class='center '>"
                                             +"<input type='text' class='form-control' name='newDate'>"
@@ -148,18 +137,11 @@ html
                                       +"</td>"
                                     +"</tr>"
                                   );
-                                  //userAdded.save();
                                   users.add(userAdded);
-                                  
-                                 for (var i = 1; i < 3; i ++){
-                                    //var newUser = new UserFactory;
-                                 //   newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
-                                    //alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
-                                 }
                             },
                             delUser:
                                 function delUser(userId){
-                                    alert(userId);
+                                    //alert(userId);
                                     $.ajax({
                                         type : "POST",
                                         url : "/crud/delUser",
@@ -172,33 +154,54 @@ html
                                         }
                                     })
                                     window.location.reload(true);
+                                },
+                            confirmAdd:
+                                function confirmAdd(){
+                                     //alert('confirmed');
+                                     var newUser = new UserFactory();
+                                     //alert($(".form-control").eq(0).val());
+                                     //newUser.set("name",$(.form-control").eq(0).val());
+                                     newUser.set({name:$(".form-control").eq(0).val(),
+                                                regDate:$(".form-control").eq(1).val(),
+                                                role:$(".form-control").eq(2).val()
+                                                });
+                                     users.add(newUser);
+                                     //alert('new:'+newUser.get('id')+' '+newUser.get('name'));
+                                     window.location.reload(true);
                                 }
                         });
       
-
+      $(function(){
           //alert('stringify :' +JSON.stringify(title));
           var view = new ListView();
           $(document).delegate('.glyphicon-minus', 'click', function() {
                 var userID = $(this).parent().siblings().filter(".userID").val();
-                alert(userID);
-                var tr = $(this).parent().parent();
-                tr.remove();
-                
+                //alert(userID);
+                /*var tr = $(this).parent().parent();
+                tr.remove();*/
                 view.delUser(userID);
           });
-          $(".userName").dblclick(function() {
-                alert('dbclick');
-                var userID = $(this).siblings().filter(".userID").val();
-                var cur = users.get(userID);
-                alert(cur.get('name'));
-                //$(this).append("<input type='text' value="+users.get(userID).get('id')+">")
-          });
-          $(document).delegate(".userName", 'dblclick', function() {
-                //alert('input');
+          $(".userName").bind({
+                dblclick:
+                    function() {
+                        var userID = $(this).siblings().filter(".userID").val();
+                        var cur = users.get(userID);
+                        $(this).empty();
+                        $(this).append("<input type='text' class='form-control' name='newUsername' value="+cur.get('name')+">");
+                        /*$(this).children().filter("input[type='text']").focus(function(){
+                                $(this).css("background-color","#FFFFCC");
+                        });*/
+                        $(this).children().filter("input[type='text']").blur(function(){
+                                window.confirm('save?');
+                                cur.set({'name':$(this).val()});
+                                cur.save();
+                                window.location.reload();
+                        });
+                    }
           });
           Backbone.sync = function(method, model){
-                    alert(method+":" + JSON.stringify(model.get('id')));
-                    if (method="create"){
+                    //alert(method+":" + JSON.stringify(model.get('id')));
+                    if (method == "create"){
                         $.ajax({
                             type : "POST",
                             url : "/reg",
@@ -214,70 +217,31 @@ html
                             }
                         })
                     }
+                    if (method == "update"){
+                        $.ajax({
+                            type : "POST",
+                            url : "/crud/updateUser",
+                            data : {
+                                "id" : model.get('id'),
+                                "name" : model.get('name'),
+                                "regDate" : model.get('regDate'),
+                                "role" : model.get('role')
+                            },
+                            dataType : "JSONP",
+                            success : function(data) {
+                                alert('succeed');
+                            }
+                        })
+                    }
           };
           $("#test").on("click", function(){
                     view.addUsr();
-          })
-          $("#minusUser").on("click", function(){
-                    alert('minus');
-                    //view.addUsr();
-                    
-          })
+          });
         }
       )
     script(type="text/javascript").
-        function delUser(userId){
-            alert(userId);
-            $.ajax({
-                type : "POST",
-                url : "/crud/delUser",
-                data : {
-                    "userId" : userId
-                },
-                dataType : "JSONP",
-                success : function(data) {
-                    alert('succeed');
-                }
-            })
-            window.location.reload(true);
-        }
-        function addUser(){
-                  alert('xiba');
-                  $('#addTh').removeClass();
-                  $('tbody').append(
-                    "<tr class='even'>"
-                      +"<td class=' sorting_1'>"
-                        //+"<div class='form-group has-success col-md-4'>"
-                            +"<input type='text' class='form-control' id='newUsername'>"
-                        //+"</div>"
-                      +"</td>"
-                      +"<td class='center '>"
-                            +"<input type='text' class='form-control' id='newDate'>"
-                      +"</td>"
-                      +"<td class='center '>"
-                            +"<input type='text' class='form-control' id='newRole'>"
-                      +"</td>"
-                      +"<td class='center '>"
-                        +"<span class='label-default label label-danger'>Banned</span>"
-                      +"</td>"
-                      +"<td class='center'>"
-                       +"<a class ='btn btn-info' onclick='confirmAdd()'>"
-                          +"Confirm"
-                       +"</a>"
-                      +"</td>"
-                      +"<td class='center'>"
-                        +"<i class='glyphicon glyphicon-minus'>"
-                      +"</td>"
-                    +"</tr>"
-                  );
-                 for (var i = 1; i < 3; i ++){
-                    var newUser = new UserFactory;
-                 //   newUser.name = $('#DataTables_Table_0 tr td:nth-child('+i+')').text();
-                    //alert($('#DataTables_Table_0 tr td:nth-child('+i+')').text());
-                }
-        };
         function confirmAdd(){
-                 alert('confirmed');
+                 //alert('confirmed');
                  var newUser = new UserFactory();
                  //alert($(".form-control").eq(0).val());
                  //newUser.set("name",$(.form-control").eq(0).val());
@@ -286,14 +250,10 @@ html
                             role:$(".form-control").eq(2).val()
                             });
                  newUser.save();
-                 alert('new:'+newUser.get('id')+' '+newUser.get('name'));
+                 //alert('new:'+newUser.get('id')+' '+newUser.get('name'));
                  window.location.reload(true);
         }
-        $(function(){
-            
-        })
   body
-
     .row
       .box.col-md-12
         .box-inner
@@ -334,33 +294,7 @@ html
                 |     
                 |     
                 tbody(role='alert', aria-live='polite', aria-relevant='all')
-                  tr.odd
-                    td.sorting_1 Abdullah
-                    |         
-                    td.center 2012/02/01
-                    |         
-                    td.center Staff
-                    |         
-                    td.center
-                      span.label-default.label.label-danger Banned
-                    |         
-                    td.center
-                      a.btn.btn-success(href='#')
-                        i.glyphicon.glyphicon-zoom-in.icon-white
-                        |                 View
-                      |             
-                      a.btn.btn-info(href='#')
-                        i.glyphicon.glyphicon-edit.icon-white
-                        |                 Edit
-                      |             
-                      a.btn.btn-danger(href='#')
-                        i.glyphicon.glyphicon-trash.icon-white
-                        |                 Delete
-                    td.center
-                      i.glyphicon.glyphicon-minus
-                      |     
-                       
-                   - each user in users
+                  -each user in users
                     tr.curUserRow
                       input(class="userID" type="hidden" value= user.id)
                       td.userName= user.name
@@ -377,14 +311,6 @@ html
                           i.glyphicon.glyphicon-zoom-in.icon-white
                           |                 View
                         |             
-                        a.btn.btn-info(href='/crud/updateUser?userId='+user.id)
-                          i.glyphicon.glyphicon-edit.icon-white
-                          |                 Edit
-                        |             
-                        a.btn.btn-danger(onclick="delUser('#{user.id}')")
-                          i.glyphicon.glyphicon-trash.icon-white
-                          |                 Delete
-                        |   
                       td.center
                         i.glyphicon.glyphicon-minus
-                        |    
+                        |   
