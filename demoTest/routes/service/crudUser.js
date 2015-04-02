@@ -30,6 +30,7 @@ exports.doUpdateUser = function(req, res){
 //	});
 };
 exports.doDeluser = function(req, res){
+	console.log('backbone:'+req.body.title);
 	//console.log('delete'+req.body.userId+' sucessfully');
 	User.remove({_id:req.body.userId},function(err){ 
 		if (!err){
@@ -40,6 +41,6 @@ exports.doDeluser = function(req, res){
 		}
 	});
 	User.find({}, function (err,users) {
-		  res.render('allUsers', { title: 'Express',users:users });
+		  res.render('editUser', { title: 'Express',users:users });
 	});
 };
