@@ -58,6 +58,19 @@ html
     script(src='/javascripts/backbone.stickit.min.js')
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
     script.
+      var RouterFactory = Backbone.Router.extend({
+                  routes : {
+                     "" : "index",
+                     "/userstest" : "addUser"
+                  },
+                  index: function(){
+                        //alert('index');
+                  },
+                  addUser: function(){
+                        alert('routes add');
+                  }
+      })
+      
       var UserFactory = Backbone.Model.extend({
                   idAttribute: "_id",
                   defaults : {
@@ -66,10 +79,10 @@ html
                     , role: ""
                     , status: ""
                   },
-                  url:"/reg",
+                  url:"/users",
                   initialize : function(){
                       this.on('change:name', function(){
-                            //alert("name changed");
+                           // alert("name changed");
                       });
                   }
           });
@@ -105,17 +118,20 @@ html
                                     curUser.set("name", $(this).children().filter(".userName").html());
                                     curUser.set("regDate", $(this).children().filter(".userRegDate").html());
                                     curUser.set("role", $(this).children().filter(".userRole").html());
+                                    //curUser.save();
+                                    //curUser.fetch();
+                                    //alert('add judge save')
                                     users.add(curUser);
                             });
                             
                         },
-                        url:"/reg",
+                        url:"/users",
                         addUsr:
                             function addUsr(){
                                   var userAdded = new UserFactory();
                                   $('tbody').parent().append(
                                     "<tr>"
-                                      +"<td class=' sorting_1'>"
+                                      +"<td class='sorting_1'>"
                                             +"<input type='text' class='form-control' name='newUsername'>"
                                       +"</td>"
                                       +"<td class='center '>"
@@ -142,18 +158,19 @@ html
                             delUser:
                                 function delUser(userId){
                                     //alert(userId);
+                                    window.confirm('Are you sure to delete it?');
                                     $.ajax({
                                         type : "POST",
-                                        url : "/crud/delUser",
+                                        url : "/users/delUser",
                                         data : {
-                                            "userId" : userId
+                                            "id" : userId
                                         },
                                         dataType : "JSONP",
                                         success : function(data) {
                                             alert('succeed');
                                         }
                                     })
-                                    window.location.reload(true);
+                                    //window.location.reload(true);
                                 },
                             confirmAdd:
                                 function confirmAdd(){
@@ -165,46 +182,64 @@ html
                                                 regDate:$(".form-control").eq(1).val(),
                                                 role:$(".form-control").eq(2).val()
                                                 });
+                                     newUser.set("id", "");
+                                     newUser.save();
                                      users.add(newUser);
                                      //alert('new:'+newUser.get('id')+' '+newUser.get('name'));
                                      window.location.reload(true);
                                 }
                         });
-      
+      var view;
       $(function(){
+          var userRouter = new RouterFactory();
+          Backbone.history.start({pushState : true});
           //alert('stringify :' +JSON.stringify(title));
-          var view = new ListView();
+          view = new ListView();
           $(document).delegate('.glyphicon-minus', 'click', function() {
                 var userID = $(this).parent().siblings().filter(".userID").val();
                 //alert(userID);
-                /*var tr = $(this).parent().parent();
-                tr.remove();*/
+                var cur = users.get(userID);
+                //alert('delete:'+cur.get('id'));
                 view.delUser(userID);
+                //cur.destroy();
+                var tr = $(this).parent().parent();
+                tr.remove();
+                //cur.set('name', 'Yingxi');
+               //
           });
           $(".userName").bind({
                 dblclick:
                     function() {
                         var userID = $(this).siblings().filter(".userID").val();
+                        //alert(userID);
                         var cur = users.get(userID);
+                         //alert(cur);
                         $(this).empty();
-                        $(this).append("<input type='text' class='form-control' name='newUsername' value="+cur.get('name')+">");
+                        $(this).append("<input type='text' class='form-control' name='updateUsername' value="+cur.get('name')+">");
                         /*$(this).children().filter("input[type='text']").focus(function(){
                                 $(this).css("background-color","#FFFFCC");
                         });*/
-                        $(this).children().filter("input[type='text']").blur(function(){
+                        $(this).children().filter("input[type='text'][name='updateUsername']").blur(function(){
                                 window.confirm('save?');
                                 cur.set({'name':$(this).val()});
+                                //alert('save data:'+cur.save());
                                 cur.save();
+                                users.add(cur);
+                                //$(this).parent().text(cur.get('name'));
+                                //alert($(this).parent().text());// = cur.get('name');
+                                //$(this).remove();
+                                
                                 window.location.reload();
                         });
+                        
                     }
           });
-          Backbone.sync = function(method, model){
-                    //alert(method+":" + JSON.stringify(model.get('id')));
+         /* Backbone.sync = function(method, model){
+                    alert(method+":" + JSON.stringify(model.get('name')));
                     if (method == "create"){
                         $.ajax({
                             type : "POST",
-                            url : "/reg",
+                            url : "/users",
                             data : {
                                 "id" : model.get('id'),
                                 "name" : model.get('name'),
@@ -217,10 +252,11 @@ html
                             }
                         })
                     }
+                    
                     if (method == "update"){
                         $.ajax({
                             type : "POST",
-                            url : "/crud/updateUser",
+                            url : "/users/updateUser",
                             data : {
                                 "id" : model.get('id'),
                                 "name" : model.get('name'),
@@ -233,7 +269,7 @@ html
                             }
                         })
                     }
-          };
+          };*/
           $("#test").on("click", function(){
                     view.addUsr();
           });
@@ -241,17 +277,10 @@ html
       )
     script(type="text/javascript").
         function confirmAdd(){
-                 //alert('confirmed');
-                 var newUser = new UserFactory();
-                 //alert($(".form-control").eq(0).val());
-                 //newUser.set("name",$(.form-control").eq(0).val());
-                 newUser.set({name:$(".form-control").eq(0).val(),
-                            regDate:$(".form-control").eq(1).val(),
-                            role:$(".form-control").eq(2).val()
-                            });
-                 newUser.save();
+                 alert('confirmed');
+                 view.confirmAdd();
                  //alert('new:'+newUser.get('id')+' '+newUser.get('name'));
-                 window.location.reload(true);
+                // window.location.reload(true);
         }
   body
     .row
@@ -289,7 +318,7 @@ html
                     th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Role: activate to sort column ascending', style='width: 88px;') Role
                     th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Status: activate to sort column ascending', style='width: 100px;') Status
                     th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Actions: activate to sort column ascending', style='width: 351px;') Actions
-                    th#test
+                    th#test(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Actions: activate to sort column ascending', style='width: 35px;')
                       i.glyphicon.glyphicon-plus.icon-white
                 |     
                 |     

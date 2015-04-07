@@ -29,13 +29,14 @@ exports.doLogin=function(req,res){
     })
 };
 exports.reg=function(req,res){
-	console.log('the data are '+req.body.newUser);
+	//console.log('the data are '+req.body.newUser);
     //res.render('reg',{title:'Register Page'});
 };
 exports.doReg=function(req,res){
-	//console.log('the data are '+req.body.newUser);
+	//console.log('the data are '+req.body['name']);
+	console.log("put got data");
     var judID = req.body['id'];
-    console.log("the ID is:"+judID);
+    //console.log("the ID is:"+judID);
     
 	var user = new User({
     	name:req.body['name'],
@@ -45,13 +46,13 @@ exports.doReg=function(req,res){
 	if (typeof(judID) != "undefined"){
 		user._id = judID;
 	}
-    console.log('the data are '+user);
-    user.save(function (err, user) {
+    //console.log('the data are '+user);
+    /*user.save(function (err, user) {
         if(!err) {
             //console.log(user);
             //console.log('the insert data is'+user);
             res.redirect('/')
         }
-    });
+    });*/
     
 };

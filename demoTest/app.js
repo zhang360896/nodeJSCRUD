@@ -33,12 +33,16 @@ app.get('/reg',routes.reg);
 app.post('/reg',routes.doReg);
 
 //设置CRUD的操作路由
-//删除
-app.post('/crud/delUser', crudRoutes.doDeluser);
+//增加 
+app.post('/users', crudRoutes.doReg);
 //修改
-app.get('/crud/updateUser', crudRoutes.UpdateUser);
-app.post('/crud/updateUser', crudRoutes.doUpdateUser);
-//app.get('/crud/delUser',crudRoutesMap.doDeluser);
+app.put('/users', crudRoutes.doUpdateUser);
+//删除
+//app.del('/users', crudRoutes.doDeluser);
+
+//app.get('/users/updateUser', crudRoutes.UpdateUser);
+//app.post('/users/updateUser', crudRoutes.doUpdateUser);
+app.post('/users/delUser',crudRoutes.doDeluser);
 //mongoose
 mongoose.connect('mongodb://localhost/test');  //2
 

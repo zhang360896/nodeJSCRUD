@@ -1,4 +1,29 @@
 var User = require('../../models/user');
+var url = require('url');
+exports.reg=function(req,res){
+	//console.log('the data are '+req.body.newUser);
+    //res.render('reg',{title:'Register Page'});
+};
+exports.doReg=function(req,res){
+	console.log('the data are '+req.body['name']);
+	console.log("reg put got data");
+  
+	var user = new User({
+    	name:req.body['name'],
+    	regDate:req.body['regDate'],
+    	role:req.body['role'],
+    });
+    console.log('the data are '+user);
+    user.save(function (err, user) {
+        if(!err) {
+            //console.log(user);
+            //console.log('the insert data is'+user);
+            res.redirect('/')
+        }
+    });
+    
+};
+
 /*
  * GET home page.
  */
@@ -36,17 +61,22 @@ exports.doUpdateUser = function(req, res){
 //	});
 };
 exports.doDeluser = function(req, res){
-	console.log('backbone:'+req.body.title);
-	//console.log('delete'+req.body.userId+' sucessfully');
-	User.remove({_id:req.body.userId},function(err){ 
-		if (!err){
-		    console.log('deleted:'+req.body.userId);
-	    }
-		else {
-			console.log('delete failed');
-		}
-	});
-	User.find({}, function (err,users) {
-		  res.render('editUser', { title: 'Express',users:users });
-	});
+	//console.log('backbone:'+req.body.title);
+	var test = url.parse(req.url, true).query;
+	console.log("the param is:"+req.body.name);
+	var judID = req.body['id'];
+    console.log("the ID is:"+judID);
+	if (typeof(judID) != "undefined"){
+		User.remove({_id:judID},function(err){ 
+			if (!err){
+			    console.log('deleted:'+judID);
+		    }
+			else {
+				console.log('delete failed');
+			}
+		});
+		/*User.find({}, function (err,users) {
+			  res.render('editUser', { title: 'Express',users:users });
+		});*/
+	}
 };
