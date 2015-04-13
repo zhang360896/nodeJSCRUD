@@ -15,6 +15,7 @@ html
     link(href='/charisma-master/css/jquery.iphone.toggle.css', rel='stylesheet')
     link(href='/charisma-master/css/uploadify.css', rel='stylesheet')
     link(href='/charisma-master/css/animate.min.css', rel='stylesheet')
+    link(href='/stylesheets/chosen.css', rel='stylesheet')
     // jQuery
     script(src='/charisma-master/bower_components/jquery/jquery.min.js')
     // The HTML5 shim, for IE6-8 support of HTML5 elements
@@ -31,7 +32,7 @@ html
     // data table plugin
     script(src='/charisma-master/js/jquery.dataTables.min.js')
     // select or dropdown enhancer
-    script(src='/charisma-master/bower_components/chosen/chosen.jquery.min.js')
+    //script(src='/charisma-master/bower_components/chosen/chosen.jquery.min.js')
     // plugin for gallery image view
     script(src='/charisma-master/bower_components/colorbox/jquery.colorbox-min.js')
     // notification plugin
@@ -56,6 +57,8 @@ html
     script(src='/javascripts/underscore-min.js')
     script(src='/javascripts/backbone-min.js')
     script(src='/javascripts/backbone.stickit.min.js')
+    //chosen plugin
+    script(src='/javascripts/chosen_v1.4.1/chosen.jquery.js')
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
     script.
       var RouterFactory = Backbone.Router.extend({
@@ -191,6 +194,26 @@ html
                         });
       var view;
       $(function(){
+            var config = {
+                '.chosen-select' : {allow_regex_arbitrary:true, allow_regex_search:true, search_contains:true},
+                '.chosen-select-deselect' : {allow_single_deselect:true},
+                '.chosen-select-no-single' : {disable_search_threshold:10},
+                '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+                '.chosen-select-width' : {width:"95%"}
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+            }
+          $('#testButton').click(function (){
+                $('#testForButton').append(
+                        "<select class='chosen-select' multiple data-placeholder='Choose a Country' style='width:350px;' tabindex='1'>" 
+                        +"<option value=''></option>"  
+                        +"<option value='United States'>United States</option>"  
+                        +"<option value='United Kingdom'>United Kingdom</option>"
+                        +"<option value='Afghanistan'>Afghanistan</option>"
+                        +"<option value='Albania'>Albania</option>"  
+                      +"</select>");
+          });
           var userRouter = new RouterFactory();
           Backbone.history.start({pushState : true});
           //alert('stringify :' +JSON.stringify(title));
@@ -220,7 +243,7 @@ html
                                 $(this).css("background-color","#FFFFCC");
                         });*/
                         $(this).children().filter("input[type='text'][name='updateUsername']").blur(function(){
-                                window.confirm('save?');
+                                if (window.confirm('save?')){
                                 cur.set({'name':$(this).val()});
                                 //alert('save data:'+cur.save());
                                 cur.save();
@@ -228,7 +251,7 @@ html
                                 //$(this).parent().text(cur.get('name'));
                                 //alert($(this).parent().text());// = cur.get('name');
                                 //$(this).remove();
-                                
+                                }
                                 window.location.reload();
                         });
                         
@@ -283,6 +306,17 @@ html
                 // window.location.reload(true);
         }
   body
+    input(id="testButton" type="button" value='test')
+    div#testForButton
+    select.chosen-select(multiple data-placeholder='Choose a Country' style='width:350px;' tabindex='1')
+      option(value='United States') United States
+      option(value='aaaaaa') aaaaaaa
+      option(value='bbbbbb') bbbbbbb
+      option(value='zz_yy_xx') zz_yy_xx
+      option(value='United States') United States
+      option(value='United Kingdom') United Kingdom
+      option(value='Afghanistan') Afghanistan
+      option(value='Albania') Albania
     .row
       .box.col-md-12
         .box-inner
