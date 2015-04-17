@@ -59,6 +59,8 @@ html
     script(src='/javascripts/backbone.stickit.min.js')
     //chosen plugin
     script(src='/javascripts/chosen_v1.4.1/chosen.jquery.js')
+    //validate plugin
+    script(src='/javascripts/jquery.validate.js')
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
     script.
       var RouterFactory = Backbone.Router.extend({
@@ -195,7 +197,7 @@ html
       var view;
       $(function(){
             var config = {
-                '.chosen-select' : {allow_regex_arbitrary:true, allow_regex_search:true, search_contains:true},
+                '.chosen-select' : { allow_regex_search:true, search_contains:true},
                 '.chosen-select-deselect' : {allow_single_deselect:true},
                 '.chosen-select-no-single' : {disable_search_threshold:10},
                 '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
@@ -305,9 +307,59 @@ html
                  //alert('new:'+newUser.get('id')+' '+newUser.get('name'));
                 // window.location.reload(true);
         }
+    script(type="text/javascript").
+      $(function(){
+            //  字符验证        
+            jQuery.validator.addMethod( "stringCheck" ,  function (value, element)  {      
+                            var isCharacter = true;
+                            for (var i = 0; i < value.length; i ++){
+                                if (!( value[i] == ' ' || value[i]>='a' && value[i]<='z' || value[i]>='A' && value[i]<='Z')){
+                                    isCharacter = false;
+                                    break;
+                                }
+                            }
+                            return this.optional(element) || isCharacter;       
+            } ,  " 只能包括英文字母" );   
+            $("#typeSelect").change(function (){
+               var judType = $("#typeSelect").val();
+               //alert(judType);
+               $("#validateText").attr("name", judType);
+            })
+            $("#validateForm").validate({  
+               //debug: true,
+               rules: {  
+                   string: {
+                        required: true,
+                        stringCheck: true
+                   },  
+                   email: {  
+                        required: true,  
+                        email: true  
+                   },  
+                   number: {
+                        number:true,
+                        required: true,  
+                        minlength: 5  
+                   }
+                },  
+               messages: {  
+                        
+               }  
+             });
+      })
   body
     input(id="testButton" type="button" value='test')
-    div#testForButton
+    div#DemoValidate
+      form#validateForm(action="?", method="get")
+        select#typeSelect.chosen-select(data-placeholder='Choose a type' name='validateSelect' style='width:100px;' tabindex='1')
+          option(value='string' ) string
+          option(value='number') number
+          option(value='email' selected) email
+        input#validateText(type="text" name='string' style='width:350px;' tabindex='1' )
+        &nbsp;&nbsp;&nbsp;
+        input#validateButton(type="submit" name='validateButton' value="validate it!" style='width:100px;' tabindex='1' )
+        
+    <!--div#testForButton
     select.chosen-select(multiple data-placeholder='Choose a Country' style='width:350px;' tabindex='1')
       option(value='United States') United States
       option(value='aaaaaa') aaaaaaa
@@ -317,6 +369,8 @@ html
       option(value='United Kingdom') United Kingdom
       option(value='Afghanistan') Afghanistan
       option(value='Albania') Albania
+      option(value='&&&&&') 12
+      option(value='#####') ,,,,,-->
     .row
       .box.col-md-12
         .box-inner
