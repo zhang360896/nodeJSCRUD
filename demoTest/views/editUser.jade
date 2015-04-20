@@ -100,12 +100,10 @@ html
                           +"</td>"
                         +"</tr>"
                       );
-                      users.add(userAdded);
+                      if (typeof userAdded != 'undefined') users.add(userAdded);
                             
                   }
       })
-      var userRouter = new RouterFactory();
-      Backbone.history.start({pushState : true});
           
       var UserFactory = Backbone.Model.extend({
                   idAttribute: "_id",
@@ -248,6 +246,9 @@ html
                       +"</select>");
           });
           //alert('stringify :' +JSON.stringify(title));
+          var userRouter = new RouterFactory();
+          Backbone.history.start({pushState : true});
+      
           view = new ListView();
           $(document).delegate('.glyphicon-minus', 'click', function() {
                 var userID = $(this).parent().siblings().filter(".userID").val();
@@ -327,7 +328,11 @@ html
           $("#test").on("click", function(){
                     //view.addUsr();
                     var userAdded = new UserFactory();
-                    window.location.href = '#/userstest/'+userAdded;
+                    console.log('domain:'+window.location.domain);
+                    console.log('host:'+window.location.host);
+                    console.log('href:'+window.location.href);
+                    
+                    window.location.href = 'http://'+window.location.host+'/#/userstest/'+userAdded;
           });
         }
       )
