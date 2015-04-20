@@ -64,18 +64,49 @@ html
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
     script.
       var RouterFactory = Backbone.Router.extend({
-                  routes : {
-                     "" : "index",
-                     "/userstest" : "addUser"
-                  },
+                  initialize: function (routes) {
+                                    this.route("userstest/:userAdded", "addUser");
+                            },
                   index: function(){
-                        //alert('index');
+                        console.log('index');
                   },
-                  addUser: function(){
-                        alert('routes add');
+                  testRoute: function(){
+                        console.log('testRoute');
+                  },
+                  addUser: function(userAdded){
+                       alert('routes user added!'+ userAdded); 
+                       //var userAdded = new UserFactory();
+                      $('tbody').parent().append(
+                        "<tr>"
+                          +"<td class='sorting_1'>"
+                                +"<input type='text' class='form-control' name='newUsername'>"
+                          +"</td>"
+                          +"<td class='center '>"
+                                +"<input type='text' class='form-control' name='newDate'>"
+                          +"</td>"
+                          +"<td class='center '>"
+                                +"<input type='text' class='form-control' name='newRole'>"
+                          +"</td>"
+                          +"<td class='center '>"
+                            +"<span class='label-default label label-danger'>Banned</span>"
+                          +"</td>"
+                          +"<td class='center'>"
+                           +"<a class ='btn btn-info' onclick='confirmAdd()'>"
+                              +"Confirm"
+                           +"</a>"
+                          +"</td>"
+                          +"<td class='center'>"
+                            +"<i class='glyphicon glyphicon-minus'>"
+                          +"</td>"
+                        +"</tr>"
+                      );
+                      users.add(userAdded);
+                            
                   }
       })
-      
+      var userRouter = new RouterFactory();
+      Backbone.history.start({pushState : true});
+          
       var UserFactory = Backbone.Model.extend({
                   idAttribute: "_id",
                   defaults : {
@@ -216,8 +247,6 @@ html
                         +"<option value='Albania'>Albania</option>"  
                       +"</select>");
           });
-          var userRouter = new RouterFactory();
-          Backbone.history.start({pushState : true});
           //alert('stringify :' +JSON.stringify(title));
           view = new ListView();
           $(document).delegate('.glyphicon-minus', 'click', function() {
@@ -296,7 +325,9 @@ html
                     }
           };*/
           $("#test").on("click", function(){
-                    view.addUsr();
+                    //view.addUsr();
+                    var userAdded = new UserFactory();
+                    window.location.href = '#/userstest/'+userAdded;
           });
         }
       )
@@ -359,7 +390,7 @@ html
         &nbsp;&nbsp;&nbsp;
         input#validateButton(type="submit" name='validateButton' value="validate it!" style='width:100px;' tabindex='1' )
         
-    <!--div#testForButton
+    div#testForButton
     select.chosen-select(multiple data-placeholder='Choose a Country' style='width:350px;' tabindex='1')
       option(value='United States') United States
       option(value='aaaaaa') aaaaaaa
@@ -370,7 +401,7 @@ html
       option(value='Afghanistan') Afghanistan
       option(value='Albania') Albania
       option(value='&&&&&') 12
-      option(value='#####') ,,,,,-->
+      option(value='#####') ,,,,,
     .row
       .box.col-md-12
         .box-inner
