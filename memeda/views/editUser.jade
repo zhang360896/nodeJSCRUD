@@ -1,0 +1,582 @@
+html
+  head
+    link(href='/charisma-master/css/bootstrap-cerulean.min.css', rel='stylesheet')
+    link(href='/charisma-master/css/charisma-app.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/fullcalendar/dist/fullcalendar.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/fullcalendar/dist/fullcalendar.print.css', rel='stylesheet', media='print')
+    link(href='/charisma-master/bower_components/chosen/chosen.min.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/colorbox/example3/colorbox.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/responsive-tables/responsive-tables.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css', rel='stylesheet')
+    link(href='/charisma-master/css/jquery.noty.css', rel='stylesheet')
+    link(href='/charisma-master/css/noty_theme_default.css', rel='stylesheet')
+    link(href='/charisma-master/css/elfinder.min.css', rel='stylesheet')
+    link(href='/charisma-master/css/elfinder.theme.css', rel='stylesheet')
+    link(href='/charisma-master/css/jquery.iphone.toggle.css', rel='stylesheet')
+    link(href='/charisma-master/css/uploadify.css', rel='stylesheet')
+    link(href='/charisma-master/css/animate.min.css', rel='stylesheet')
+    link(href='/stylesheets/chosen.css', rel='stylesheet')
+    link(href='/stylesheets/timePicker/jquery.datetimepicker.css', rel='stylesheet')
+    //link(href='/stylesheets/timeLine/jquery.jqtimeline.css', rel='stylesheet')
+    link(href='/stylesheets/timeLine/jquery.timeline.blue.css', rel='stylesheet')
+    
+    //link(href='/stylesheets/timeSheet/all-65c9e5e3.css', rel='stylesheet')
+    
+    // jQuery
+    script(src='/charisma-master/bower_components/jquery/jquery.min.js')
+    // The HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+    //script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+      // [endif]
+          
+    //extern JavaScripts
+    // timeLine plugins
+    script(src='/javascripts/timeLine/jquery.jqtimeline.js')
+    //datetimepicker plugin
+    script(src='/javascripts/datePicker/jquery.datetimepicker.js')
+    //timeSheet plugin
+    //script(src='/javascripts/timeSheet/timesheet-ec6cdbbf.js')
+    script(src='/charisma-master/bower_components/bootstrap/dist/js/bootstrap.min.js')
+    // library for cookie management
+    script(src='/charisma-master/js/jquery.cookie.js')
+    // calender plugin
+    script(src='/charisma-master/bower_components/moment/min/moment.min.js')
+    script(src='/charisma-master/bower_components/fullcalendar/dist/fullcalendar.min.js')
+    // data table plugin
+    script(src='/charisma-master/js/jquery.dataTables.min.js')
+    // select or dropdown enhancer
+    //script(src='/charisma-master/bower_components/chosen/chosen.jquery.min.js')
+    // plugin for gallery image view
+    script(src='/charisma-master/bower_components/colorbox/jquery.colorbox-min.js')
+    // notification plugin
+    script(src='/charisma-master/js/jquery.noty.js')
+    // library for making tables responsive
+    script(src='/charisma-master/bower_components/responsive-tables/responsive-tables.js')
+    // tour plugin
+    script(src='/charisma-master/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js')
+    // star rating plugin
+    script(src='/charisma-master/js/jquery.raty.min.js')
+    // for iOS style toggle switch
+    script(src='/charisma-master/js/jquery.iphone.toggle.js')
+    // autogrowing textarea plugin
+    script(src='/charisma-master/js/jquery.autogrow-textarea.js')
+    // multiple file upload plugin
+    script(src='/charisma-master/js/jquery.uploadify-3.1.min.js')
+    // history.js for cross-browser state change on ajax
+    script(src='/charisma-master/js/jquery.history.js')
+    // application script for Charisma demo
+    script(src='/charisma-master/js/charisma.js')
+    // backbone's scripts
+    script(src='/javascripts/underscore-min.js')
+    script(src='/javascripts/backbone-min.js')
+    script(src='/javascripts/backbone.stickit.min.js')
+    //chosen plugin
+    script(src='/javascripts/chosen_v1.4.1/chosen.jquery.js')
+    //validate plugin
+    script(src='/javascripts/jquery.validate.js')
+    link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
+    script.
+      var RouterFactory = Backbone.Router.extend({
+                  index: function(){
+                        console.log('index');
+                  },
+                  testRoute: function(){
+                        console.log('testRoute');
+                  },
+                  addUser: function(userAdded){
+                       //alert('routes user added!'+ userAdded); 
+                       //var userAdded = new UserFactory();
+                      $('tbody').parent().append(
+                        "<tr>"
+                          +"<td class='sorting_1'>"
+                                +"<input type='text' class='form-control' name='newUsername'>"
+                          +"</td>"
+                          +"<td class='center '>"
+                                +"<input type='text' class='form-control' name='newDate'>"
+                          +"</td>"
+                          +"<td class='center '>"
+                                +"<input type='text' class='form-control' name='newRole'>"
+                          +"</td>"
+                          +"<td class='center '>"
+                            +"<span class='label-default label label-danger'>Banned</span>"
+                          +"</td>"
+                          +"<td class='center'>"
+                           +"<a class ='btn btn-info' onclick='confirmAdd()'>"
+                              +"Confirm"
+                           +"</a>"
+                          +"</td>"
+                          +"<td class='center'>"
+                            +"<i class='glyphicon glyphicon-minus'>"
+                          +"</td>"
+                        +"</tr>"
+                      );
+                      if (typeof userAdded != 'undefined') users.add(userAdded);
+                            
+                  }
+      })
+          
+      var UserFactory = Backbone.Model.extend({
+                  idAttribute: "_id",
+                  defaults : {
+                      name: ""
+                    , regDate: ""
+                    , role: ""
+                    , status: ""
+                  },
+                  url:"/users",
+                  initialize : function(){
+                      this.on('change:name', function(){
+                           // alert("name changed");
+                      });
+                  }
+          });
+        var C = Backbone.Collection.extend({
+            initialize : function(){
+                            this.on('reset', function(){
+                                    alert(123);
+                            });
+                         },
+            url:'/'
+        });
+        var AddCollectionFactory = Backbone.Collection.extend({
+            initialize : function(){
+                            this.on('reset', function(){
+                                    alert(123);
+                            });
+                         },
+            url:'/'
+        });
+        var users = new AddCollectionFactory();
+        var ListView = Backbone.View.extend({
+                        tbd: $('tbody'),
+                        h2: $('h2'),
+                        initialize: function(){
+                            _.bindAll(this, 'render');
+                            //alert("view");
+                            //save all current user information in Model
+                            $(".curUserRow").each(function (){
+                                    //alert($(this).val());
+                                    var userID = $(this).children().filter("input[type='hidden']").val();;
+                                    var curUser = new UserFactory({ _id: userID});
+                                    curUser.set("id", userID);
+                                    curUser.set("name", $(this).children().filter(".userName").html());
+                                    curUser.set("regDate", $(this).children().filter(".userRegDate").html());
+                                    curUser.set("role", $(this).children().filter(".userRole").html());
+                                    //curUser.save();
+                                    //curUser.fetch();
+                                    //alert('add judge save')
+                                    users.add(curUser);
+                            });
+                            
+                        },
+                        url:"/users",
+                        addUsr:
+                            function addUsr(){
+                                  var userAdded = new UserFactory();
+                                  $('tbody').parent().append(
+                                    "<tr>"
+                                      +"<td class='sorting_1'>"
+                                            +"<input type='text' class='form-control' name='newUsername'>"
+                                      +"</td>"
+                                      +"<td class='center '>"
+                                            +"<input type='text' class='form-control' name='newDate'>"
+                                      +"</td>"
+                                      +"<td class='center '>"
+                                            +"<input type='text' class='form-control' name='newRole'>"
+                                      +"</td>"
+                                      +"<td class='center '>"
+                                        +"<span class='label-default label label-danger'>Banned</span>"
+                                      +"</td>"
+                                      +"<td class='center'>"
+                                       +"<a class ='btn btn-info' onclick='confirmAdd()'>"
+                                          +"Confirm"
+                                       +"</a>"
+                                      +"</td>"
+                                      +"<td class='center'>"
+                                        +"<i class='glyphicon glyphicon-minus'>"
+                                      +"</td>"
+                                    +"</tr>"
+                                  );
+                                  users.add(userAdded);
+                            },
+                            delUser:
+                                function delUser(userId){
+                                    //alert(userId);
+                                    window.confirm('Are you sure to delete it?');
+                                    $.ajax({
+                                        type : "POST",
+                                        url : "/users/delUser",
+                                        data : {
+                                            "id" : userId
+                                        },
+                                        dataType : "JSONP",
+                                        success : function(data) {
+                                            alert('succeed');
+                                        }
+                                    })
+                                    //window.location.reload(true);
+                                },
+                            confirmAdd:
+                                function confirmAdd(){
+                                     //alert('confirmed');
+                                     var newUser = new UserFactory();
+                                     //alert($(".form-control").eq(0).val());
+                                     //newUser.set("name",$(.form-control").eq(0).val());
+                                     newUser.set({name:$(".form-control").eq(0).val(),
+                                                regDate:$(".form-control").eq(1).val(),
+                                                role:$(".form-control").eq(2).val()
+                                                });
+                                     newUser.set("id", "");
+                                     newUser.save();
+                                     users.add(newUser);
+                                     //alert('new:'+newUser.get('id')+' '+newUser.get('name'));
+                                     window.location.reload(true);
+                                }
+                        });
+      var view;
+      $(function(){
+            var config = {
+                '.chosen-select' : { allow_regex_search:true, search_contains:true},
+                '.chosen-select-deselect' : {allow_single_deselect:true},
+                '.chosen-select-no-single' : {disable_search_threshold:10},
+                '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+                '.chosen-select-width' : {width:"95%"}
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+            }
+            $("#datePanel").hide();
+            $('#datePickerBtn').click(showDatePanel);
+            $('#closeDatePanel').click(closeDatePanel);
+            $("#punchBtn").click(showPunchInfo);
+            $('#testButton').click(function (){
+                $('#testForButton').append(
+                        "<select class='chosen-select' multiple data-placeholder='Choose a Country' style='width:350px;' tabindex='1'>" 
+                        +"<option value=''></option>"  
+                        +"<option value='United States'>United States</option>"  
+                        +"<option value='United Kingdom'>United Kingdom</option>"
+                        +"<option value='Afghanistan'>Afghanistan</option>"
+                        +"<option value='Albania'>Albania</option>"  
+                      +"</select>");
+          });
+          //alert('stringify :' +JSON.stringify(title));
+          var userRouter = new RouterFactory();
+          Backbone.history.start({pushState : true});
+      
+          view = new ListView();
+          $(document).delegate('.glyphicon-minus', 'click', function() {
+                var userID = $(this).parent().siblings().filter(".userID").val();
+                //alert(userID);
+                var cur = users.get(userID);
+                //alert('delete:'+cur.get('id'));
+                view.delUser(userID);
+                //cur.destroy();
+                var tr = $(this).parent().parent();
+                tr.remove();
+                //cur.set('name', 'Yingxi');
+               //
+          });
+          $(".userName").bind({
+                click:
+                    function() {
+                        var userID = $(this).siblings().filter(".userID").val();
+                        //alert(userID);
+                        var cur = users.get(userID);
+                         //alert(cur);
+                        $(this).empty();
+                        $(this).append("<input type='text' class='form-control' name='updateUsername' value="+cur.get('name')+">");
+                        $(this).children().filter("input[type='text'][name='updateUsername']").focus(function(){
+                                //alert('html:'+$(this).html());
+                                //console.log('focus'+$(this).val());
+                               
+                        });
+                        
+                       $(this).children().filter("input[type='text'][name='updateUsername']").focus(); $(this).children().filter("input[type='text'][name='updateUsername']").blur(function(){
+                       
+                                if (window.confirm('save?')){
+                                    cur.set({'name':$(this).val()});
+                                    //alert('save data:'+cur.save());
+                                    cur.save();
+                                    users.add(cur);
+                                    //$(this).parent().text(cur.get('name'));
+                                    //alert($(this).parent().text());// = cur.get('name');
+                                    //$(this).remove();
+                                }
+                                window.location.reload();
+                        });
+                        
+                    }
+          });
+          $(".userRegDate").bind({
+                click:
+                    function() {
+                        var userID = $(this).siblings().filter(".userID").val();
+                        //alert(userID);
+                        var cur = users.get(userID);
+                         //alert(cur);
+                        $(this).empty();
+                        $(this).append("<input type='text' class='form-control' name='updateUserRegDate' value="+cur.get('regDate')+">");
+                        $(this).children().filter("input[type='text'][name='updateUserRegDate']").focus(function(){
+                                //alert('html:'+$(this).html());
+                                //console.log('focus'+$(this).val());
+                               
+                        });
+                        
+                       $(this).children().filter("input[type='text'][name='updateUserRegDate']").focus();  $(this).children().filter("input[type='text'][name='updateUserRegDate']").blur(function(){
+                                if (window.confirm('save?')){
+                                //alert($(this).val());
+                                cur.set({'regDate':$(this).val()});
+                                //alert('save data:'+cur.save());
+                                cur.save();
+                                users.add(cur);
+                                //alert(cur.get('regDate'));
+                                //$(this).parent().text(cur.get('regDate'));
+                                //alert($(this).parent().text());// = cur.get('regDate');
+                                //$(this).remove();
+                                }
+                               window.location.reload();
+                        });
+                        
+                    }
+          });
+         /* Backbone.sync = function(method, model){
+                    alert(method+":" + JSON.stringify(model.get('name')));
+                    if (method == "create"){
+                        $.ajax({
+                            type : "POST",
+                            url : "/users",
+                            data : {
+                                "id" : model.get('id'),
+                                "name" : model.get('name'),
+                                "regDate" : model.get('regDate'),
+                                "role" : model.get('role')
+                            },
+                            dataType : "JSONP",
+                            success : function(data) {
+                                alert('succeed');
+                            }
+                        })
+                    }
+                    
+                    if (method == "update"){
+                        $.ajax({
+                            type : "POST",
+                            url : "/users/updateUser",
+                            data : {
+                                "id" : model.get('id'),
+                                "name" : model.get('name'),
+                                "regDate" : model.get('regDate'),
+                                "role" : model.get('role')
+                            },
+                            dataType : "JSONP",
+                            success : function(data) {
+                                alert('succeed');
+                            }
+                        })
+                    }
+          };*/
+          $("#test").on("click", function(){
+                    view.addUsr();
+                    /*var userAdded = new UserFactory();
+                    console.log('domain:'+window.location.domain);
+                    console.log('host:'+window.location.host);
+                    console.log('href:'+window.location.href);
+                    
+                    window.location.href = 'http://'+window.location.host+'/#/userstest/'+userAdded;*/
+          });
+        }
+      )
+    script(type="text/javascript").
+        function confirmAdd(){
+                 alert('confirmed');
+                 view.confirmAdd();
+                 //alert('new:'+newUser.get('id')+' '+newUser.get('name'));
+                // window.location.reload(true);
+        }
+        function showPunchInfo(){
+            //alert('showPunchInfo');
+            $('#punchBtn').hide();
+            $(".box-content").append(
+                            "<input id='datePicker' type='text' class='form-control' placeholder='点击选择日期'>"
+                            +"<input id='memo' type='text' class='form-control' placeholder='说点什么吧'>"
+                            +"<input class='btn btn-danger' id='confirmPunch' type='button' value='punch now!~'>");
+            $("#datePicker").click(
+                    function(){
+                        $(this).datetimepicker({
+                                show:true
+                        });
+                    });
+            $("#confirmPunch").click(function(){
+                //alert('the date  choosed is '+new Date($("#datePicker").val()));
+                //alert('the memo is '+$("#memo").val());
+                //Date transDate = new Date($("#datePicker").val());
+                $.ajax({
+                    url: "/punch",
+                    type: "POST",
+                    data:{
+                        "memo": $("#memo").val(),
+                        "punchDate": new Date($("#datePicker").val())
+                    }
+                }).success(function(){
+                    alert("punch done!!!Thank you");
+                }).error(function(){
+                    alert("something wrong");
+                })
+            });
+        }
+        function initTimePanel(timePoints){
+            
+        }
+        function showDatePanel(){
+                var timePoints = [];
+                initTimePanel(timePoints);
+                $('#datePanel').show(function () {
+                    //alert('showed');
+                    $.ajax({
+                        type: "GET",
+                        url: "/punch"
+                        
+                    }).success(function (data){
+                        
+                        $.each(data, function(i, item){
+                            var json = {};
+                            json.id = i;
+                            json.name = item.memo;
+                            json.on = new Date(item.punchDate);
+                            timePoints.push(json);
+                            var test = new Date(timePoints[i].on);
+                            //alert('test date'+ test);
+                            //alert('full year'+test.getFullYear());
+                            //alert('xiba'+timePoints[0].on);
+                        });
+                        $('#longTimeLine').jqtimeline({
+                            events: timePoints,
+                            numYears: 1,
+                            startYear: 2015,
+                            click: function(e, event) {
+                                loadPage(event);
+                            }
+                        }); 
+                        
+                    });
+                });
+                
+        }
+        function closeDatePanel(){
+            $("#datePanel").hide();
+        }
+
+    script(type="text/javascript").
+      $(function(){
+            //  字符验证        
+            jQuery.validator.addMethod( "stringCheck" ,  function (value, element)  {      
+                            var isCharacter = true;
+                            for (var i = 0; i < value.length; i ++){
+                                if (!( value[i] == ' ' || value[i]>='a' && value[i]<='z' || value[i]>='A' && value[i]<='Z')){
+                                    isCharacter = false;
+                                    break;
+                                }
+                            }
+                            return this.optional(element) || isCharacter;       
+            } ,  " 只能包括英文字母" );   
+            $("#typeSelect").change(function (){
+               var judType = $("#typeSelect").val();
+               //alert(judType);
+               $("#validateText").attr("name", judType);
+            })
+            $("#validateForm").validate({  
+               //debug: true,
+               rules: {  
+                   string: {
+                        required: true,
+                        stringCheck: true
+                   },  
+                   email: {  
+                        required: true,  
+                        email: true  
+                   },  
+                   number: {
+                        number:true,
+                        required: true,  
+                        minlength: 5  
+                   }
+                },  
+               messages: {  
+                        
+               }  
+             });
+      })
+  body
+    .row
+      .box.col-md-12
+        .box-inner#datePanel
+          .box-header.well(data-original-title='')
+            h2
+              i.glyphicon.glyphicon-user
+              |  嚼嚼的好身材之路
+            |         
+            .box-icon
+              a.btn.btn-setting.btn-round.btn-default(href='#')
+                i.glyphicon.glyphicon-cog
+              |             
+              a.btn.btn-minimize.btn-round.btn-default(href='#')
+                i.glyphicon.glyphicon-chevron-up
+              |             
+              a.btn.btn-close.btn-round.btn-default#closeDatePanel(href='#')
+                i.glyphicon.glyphicon-remove
+          |     
+          .box-content
+            input.btn.btn-danger(type='button' value='I want to punch!!!')#punchBtn
+            div#longTimeLine
+            
+    .row
+      .box.col-md-12
+        .box-inner
+          .box-header.well(data-original-title='')
+            h2
+              i.glyphicon.glyphicon-user
+              |  么么哒币余额显示
+            |         
+            .box-icon
+              a.btn.btn-setting.btn-round.btn-default(href='#')
+                i.glyphicon.glyphicon-cog
+              |             
+              a.btn.btn-minimize.btn-round.btn-default(href='#')
+                i.glyphicon.glyphicon-chevron-up
+              |             
+              a.btn.btn-close.btn-round.btn-default(href='#')
+                i.glyphicon.glyphicon-remove
+          |     
+          .box-content
+            .alert.alert-info
+              | 当前系统显示用户余额 有问题请发邮件至360896270@qq.com获取支持
+            |     
+            |    
+            #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
+              .row
+                .col-md-6
+              table#DataTables_Table_0.table.table-striped.table-bordered.bootstrap-datatable.datatable.dataTable(aria-describedby='DataTables_Table_0_info')
+                thead
+                  tr(role='row')
+                    th.sorting_asc(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-sort='ascending', aria-label='Username: activate to sort column descending', style='width: 197px;') 姓名
+                    th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Date registered: activate to sort column ascending', style='width: 165px;') 余额
+                    th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Date registered: activate to sort column ascending', style='width: 165px;') 任务
+                    th#test(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Actions: activate to sort column ascending', style='width: 35px;')
+                      i.glyphicon.glyphicon-plus.icon-white
+                |     
+                |     
+                tbody(role='alert', aria-live='polite', aria-relevant='all')
+                  -each user in users
+                    tr.curUserRow
+                      input(class="userID" type="hidden" value= user.id)
+                      td.userName= user.name
+                      |         
+                      td.userRegDate.center= user.regDate
+                      |    
+                      td
+                        -if (user.name == '乔小姐')
+                            input.btn.btn-info(type='button' value='嚼嚼的运动打卡')#datePickerBtn
+                      td.center
+                        i.glyphicon.glyphicon-minus
+                        |   
+    

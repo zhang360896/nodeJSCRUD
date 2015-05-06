@@ -1,0 +1,175 @@
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title Free HTML5 Bootstrap Admin Template
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.')
+    meta(name='author', content='Muhammad Usman')
+    // The styles
+    link(href='/charisma-master/css/bootstrap-cerulean.min.css', rel='stylesheet')
+    link(href='/charisma-master/css/charisma-app.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/fullcalendar/dist/fullcalendar.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/fullcalendar/dist/fullcalendar.print.css', rel='stylesheet', media='print')
+    link(href='/charisma-master/bower_components/chosen/chosen.min.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/colorbox/example3/colorbox.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/responsive-tables/responsive-tables.css', rel='stylesheet')
+    link(href='/charisma-master/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css', rel='stylesheet')
+    link(href='/charisma-master/css/jquery.noty.css', rel='stylesheet')
+    link(href='/charisma-master/css/noty_theme_default.css', rel='stylesheet')
+    link(href='/charisma-master/css/elfinder.min.css', rel='stylesheet')
+    link(href='/charisma-master/css/elfinder.theme.css', rel='stylesheet')
+    link(href='/charisma-master/css/jquery.iphone.toggle.css', rel='stylesheet')
+    link(href='/charisma-master/css/uploadify.css', rel='stylesheet')
+    link(href='/charisma-master/css/animate.min.css', rel='stylesheet')
+    // jQuery
+    script(src='/charisma-master/bower_components/jquery/jquery.min.js')
+    // The HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+    //script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+      // [endif]
+          //extern JavaScripts
+    script(src='/charisma-master/bower_components/bootstrap/dist/js/bootstrap.min.js')
+    // library for cookie management
+    script(src='/charisma-master/js/jquery.cookie.js')
+    // calender plugin
+    script(src='/charisma-master/bower_components/moment/min/moment.min.js')
+    script(src='/charisma-master/bower_components/fullcalendar/dist/fullcalendar.min.js')
+    // data table plugin
+    script(src='/charisma-master/js/jquery.dataTables.min.js')
+    // select or dropdown enhancer
+    script(src='/charisma-master/bower_components/chosen/chosen.jquery.min.js')
+    // plugin for gallery image view
+    script(src='/charisma-master/bower_components/colorbox/jquery.colorbox-min.js')
+    // notification plugin
+    script(src='/charisma-master/js/jquery.noty.js')
+    // library for making tables responsive
+    script(src='/charisma-master/bower_components/responsive-tables/responsive-tables.js')
+    // tour plugin
+    script(src='/charisma-master/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js')
+    // star rating plugin
+    script(src='/charisma-master/js/jquery.raty.min.js')
+    // for iOS style toggle switch
+    script(src='/charisma-master/js/jquery.iphone.toggle.js')
+    // autogrowing textarea plugin
+    script(src='/charisma-master/js/jquery.autogrow-textarea.js')
+    // multiple file upload plugin
+    script(src='/charisma-master/js/jquery.uploadify-3.1.min.js')
+    // history.js for cross-browser state change on ajax
+    script(src='/charisma-master/js/jquery.history.js')
+    // application script for Charisma demo
+    script(src='/charisma-master/js/charisma.js')
+    // backbone's scripts
+    script(src='/javascripts/underscore-min.js')
+    script(src='/javascripts/backbone-min.js')
+    script(src='/javascripts/backbone.stickit.min.js')
+    link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
+    script(type="text/javascript").
+        function delUser1(userId){
+            alert(userId);
+            $.ajax({
+                type : "POST",
+                url : "/crud/delUser",
+                data : {
+                    "userId" : userId
+                },
+                dataType : "JSONP",
+                success : function(data) {
+                    alert('succeed');
+                }
+            })
+            window.location.reload(true);
+        }
+    script(type="text/javascript").
+      $(function(){
+          function test(){
+            alert('it works');
+               
+          }
+            
+        }
+      )
+  body
+    .row
+      .box.col-md-12
+        .box-inner
+          .box-header.well(data-original-title='')
+            h2
+              i.glyphicon.glyphicon-user
+              |  Yingxi Demo
+            |         
+            .box-icon
+              a.btn.btn-setting.btn-round.btn-default(href='#')
+                i.glyphicon.glyphicon-cog
+              |             
+              a.btn.btn-minimize.btn-round.btn-default(href='#')
+                i.glyphicon.glyphicon-chevron-up
+              |             
+              a.btn.btn-close.btn-round.btn-default(href='#')
+                i.glyphicon.glyphicon-remove
+          |     
+          .box-content
+            .alert.alert-info
+              | For help with such table please check 
+              a(href='http://datatables.net/', target='_blank') http://datatables.net/
+            |     
+            |    
+            #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
+              .row
+                .col-md-6
+              table#DataTables_Table_0.table.table-striped.table-bordered.bootstrap-datatable.datatable.dataTable(aria-describedby='DataTables_Table_0_info')
+                thead
+                  tr(role='row')
+                    th.sorting_asc(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-sort='ascending', aria-label='Username: activate to sort column descending', style='width: 197px;') Username
+                    th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Date registered: activate to sort column ascending', style='width: 165px;') Date registered
+                    th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Role: activate to sort column ascending', style='width: 88px;') Role
+                    th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Status: activate to sort column ascending', style='width: 100px;') Status
+                    th.sorting(role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Actions: activate to sort column ascending', style='width: 351px;') Actions
+                |     
+                |     
+                tbody(role='alert', aria-live='polite', aria-relevant='all')
+                  tr.odd
+                    td.sorting_1 Abdullah
+                    |         
+                    td.center 2012/02/01
+                    |         
+                    td.center Staff
+                    |         
+                    td.center
+                      span.label-default.label.label-danger Banned
+                    |         
+                    td.center
+                      a.btn.btn-success(href='#')
+                        i.glyphicon.glyphicon-zoom-in.icon-white
+                        |                 View
+                      |             
+                      a.btn.btn-info(href='#')
+                        i.glyphicon.glyphicon-edit.icon-white
+                        |                 Edit
+                      |             
+                      a.btn.btn-danger(href='#')
+                        i.glyphicon.glyphicon-trash.icon-white
+                        |                 Delete
+                   - each user in users
+                    tr
+                      td= user.name
+                      |         
+                      td.center= user.regDate
+                      |         
+                      td.center= user.id
+                      |         
+                      td.center
+                        span.label-success.label.label-default Active
+                      |         
+                      td.center
+                        a.btn.btn-success(href='#')
+                          i.glyphicon.glyphicon-zoom-in.icon-white
+                          |                 View
+                        |             
+                        a.btn.btn-info(href='/crud/updateUser?userId='+user.id)
+                          i.glyphicon.glyphicon-edit.icon-white
+                          |                 Edit
+                        |             
+                        a.btn.btn-danger(onclick="delUser('#{user.id}')")
+                          i.glyphicon.glyphicon-trash.icon-white
+                          |                 Delete
+                        |     
