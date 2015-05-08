@@ -1,7 +1,484 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    // DEV
+        // Bootstrap and template style
+        //link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+        //link(rel='stylesheet', href='/stylesheets/chosen.min.css')
+        //link(rel='stylesheet', href='/javascripts/libs/datatables/css/dataTables.bootstrap.css')
+        //// Custom Fonts
+        //link(href='/javascripts/libs/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+        //// Custom CSS
+        //link(rel='stylesheet', href='/stylesheets/template.css')
+        //link(rel='stylesheet', href='/stylesheets/marmot.css')
+        // Build
+    link(rel='stylesheet', href='/build/css/memeda.libs.min.css')
+    link(rel='stylesheet', href='/build/css/memeda.min.css')
+    // jQuery
+    script(src='/charisma-master/bower_components/jquery/jquery.min.js')
+    script(src='/javascripts/libs/timeLine/jquery.jqtimeline.js')
+    script(src='/javascripts/libs/datePicker/jquery.datetimepicker.js')
+    script(src='/charisma-master/bower_components/bootstrap/dist/js/bootstrap.min.js')
+    script(src='/charisma-master/js/jquery.cookie.js')
+    script(src='/charisma-master/bower_components/moment/min/moment.min.js')
+    script(src='/charisma-master/bower_components/fullcalendar/dist/fullcalendar.min.js')
+    script(src='/charisma-master/js/jquery.dataTables.min.js')
+    script(src='/charisma-master/bower_components/colorbox/jquery.colorbox-min.js')
+    script(src='/charisma-master/js/jquery.noty.js')
+    script(src='/charisma-master/bower_components/responsive-tables/responsive-tables.js')
+    script(src='/charisma-master/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js')
+    script(src='/charisma-master/js/jquery.raty.min.js')
+    script(src='/charisma-master/js/jquery.iphone.toggle.js')
+    script(src='/charisma-master/js/jquery.autogrow-textarea.js')
+    script(src='/charisma-master/js/jquery.uploadify-3.1.min.js')
+    script(src='/charisma-master/js/jquery.history.js')
+    script(src='/charisma-master/js/charisma.js')
+    // backbone's scripts
+    script(src='/javascripts/libs/underscore-min.js')
+    script(src='/javascripts/libs/backbone-min.js')
+    script(src='/javascripts/libs/backbone.stickit.min.js')
+    //chosen plugin
+    script(src='/javascripts/libs/chosen_v1.4.1/chosen.jquery.js')
+    //validate plugin
+    script(src='/javascripts/libs/jquery.validate.js')
+    
+    //script(src='/charisma-master/js/jquery.uploadify-3.1.min.js')
+    script(src='/build/memeda.libs.min.js')
+    script(src='/build/memeda.min.js')
+    
+    link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
+    script.
+      var RouterFactory = Backbone.Router.extend({
+                  index: function(){
+                        console.log('index');
+                  },
+                  testRoute: function(){
+                        console.log('testRoute');
+                  },
+                  addUser: function(userAdded){
+                       //alert('routes user added!'+ userAdded); 
+                       //var userAdded = new UserFactory();
+                      $('tbody').parent().append(
+                        "<tr>"
+                          +"<td class='sorting_1'>"
+                                +"<input type='text' class='form-control' name='newUsername'>"
+                          +"</td>"
+                          +"<td class='center '>"
+                                +"<input type='text' class='form-control' name='newDate'>"
+                          +"</td>"
+                          +"<td class='center '>"
+                                +"<input type='text' class='form-control' name='newRole'>"
+                          +"</td>"
+                          +"<td class='center '>"
+                            +"<span class='label-default label label-danger'>Banned</span>"
+                          +"</td>"
+                          +"<td class='center'>"
+                           +"<a class ='btn btn-info' onclick='confirmAdd()'>"
+                              +"Confirm"
+                           +"</a>"
+                          +"</td>"
+                          +"<td class='center'>"
+                            +"<i class='glyphicon glyphicon-minus'>"
+                          +"</td>"
+                        +"</tr>"
+                      );
+                      if (typeof userAdded != 'undefined') users.add(userAdded);
+                            
+                  }
+      })
+          
+      var UserFactory = Backbone.Model.extend({
+                  idAttribute: "_id",
+                  defaults : {
+                      name: ""
+                    , regDate: ""
+                    , role: ""
+                    , status: ""
+                  },
+                  url:"/users",
+                  initialize : function(){
+                      this.on('change:name', function(){
+                           // alert("name changed");
+                      });
+                  }
+          });
+        var C = Backbone.Collection.extend({
+            initialize : function(){
+                            this.on('reset', function(){
+                                    alert(123);
+                            });
+                         },
+            url:'/'
+        });
+        var AddCollectionFactory = Backbone.Collection.extend({
+            initialize : function(){
+                            this.on('reset', function(){
+                                    alert(123);
+                            });
+                         },
+            url:'/'
+        });
+        var users = new AddCollectionFactory();
+        var ListView = Backbone.View.extend({
+                        tbd: $('tbody'),
+                        h2: $('h2'),
+                        initialize: function(){
+                            _.bindAll(this, 'render');
+                            //alert("view");
+                            //save all current user information in Model
+                            $(".curUserRow").each(function (){
+                                    //alert($(this).val());
+                                    var userID = $(this).children().filter("input[type='hidden']").val();;
+                                    var curUser = new UserFactory({ _id: userID});
+                                    curUser.set("id", userID);
+                                    curUser.set("name", $(this).children().filter(".userName").html());
+                                    curUser.set("regDate", $(this).children().filter(".userRegDate").html());
+                                    curUser.set("role", $(this).children().filter(".userRole").html());
+                                    //curUser.save();
+                                    //curUser.fetch();
+                                    //alert('add judge save')
+                                    users.add(curUser);
+                            });
+                            
+                        },
+                        url:"/users",
+                        addUsr:
+                            function addUsr(){
+                                  var userAdded = new UserFactory();
+                                  $('tbody').parent().append(
+                                    "<tr>"
+                                      +"<td class='sorting_1'>"
+                                            +"<input type='text' class='form-control' name='newUsername'>"
+                                      +"</td>"
+                                      +"<td class='center '>"
+                                            +"<input type='text' class='form-control' name='newDate'>"
+                                      +"</td>"
+                                      +"<td class='center '>"
+                                            +"<input type='text' class='form-control' name='newRole'>"
+                                      +"</td>"
+                                      +"<td class='center '>"
+                                        +"<span class='label-default label label-danger'>Banned</span>"
+                                      +"</td>"
+                                      +"<td class='center'>"
+                                       +"<a class ='btn btn-info' onclick='confirmAdd()'>"
+                                          +"Confirm"
+                                       +"</a>"
+                                      +"</td>"
+                                      +"<td class='center'>"
+                                        +"<i class='glyphicon glyphicon-minus'>"
+                                      +"</td>"
+                                    +"</tr>"
+                                  );
+                                  users.add(userAdded);
+                            },
+                            delUser:
+                                function delUser(userId){
+                                    //alert(userId);
+                                    window.confirm('Are you sure to delete it?');
+                                    $.ajax({
+                                        type : "POST",
+                                        url : "/users/delUser",
+                                        data : {
+                                            "id" : userId
+                                        },
+                                        dataType : "JSONP",
+                                        success : function(data) {
+                                            alert('succeed');
+                                        }
+                                    })
+                                    //window.location.reload(true);
+                                },
+                            confirmAdd:
+                                function confirmAdd(){
+                                     //alert('confirmed');
+                                     var newUser = new UserFactory();
+                                     //alert($(".form-control").eq(0).val());
+                                     //newUser.set("name",$(.form-control").eq(0).val());
+                                     newUser.set({name:$(".form-control").eq(0).val(),
+                                                regDate:$(".form-control").eq(1).val(),
+                                                role:$(".form-control").eq(2).val()
+                                                });
+                                     newUser.set("id", "");
+                                     newUser.save();
+                                     users.add(newUser);
+                                     //alert('new:'+newUser.get('id')+' '+newUser.get('name'));
+                                     window.location.reload(true);
+                                }
+                        });
+      var view;
+      $(function(){
+            var config = {
+                '.chosen-select' : { allow_regex_search:true, search_contains:true},
+                '.chosen-select-deselect' : {allow_single_deselect:true},
+                '.chosen-select-no-single' : {disable_search_threshold:10},
+                '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+                '.chosen-select-width' : {width:"95%"}
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+            }
+            $("#datePanel").hide();
+            $('#datePickerBtn').click(showDatePanel);
+            $('#closeDatePanel').click(closeDatePanel);
+            $("#punchBtn").click(showPunchInfo);
+            $('#testButton').click(function (){
+                $('#testForButton').append(
+                        "<select class='chosen-select' multiple data-placeholder='Choose a Country' style='width:350px;' tabindex='1'>" 
+                        +"<option value=''></option>"  
+                        +"<option value='United States'>United States</option>"  
+                        +"<option value='United Kingdom'>United Kingdom</option>"
+                        +"<option value='Afghanistan'>Afghanistan</option>"
+                        +"<option value='Albania'>Albania</option>"  
+                      +"</select>");
+          });
+          //alert('stringify :' +JSON.stringify(title));
+          var userRouter = new RouterFactory();
+          Backbone.history.start({pushState : true});
+      
+          view = new ListView();
+          $(document).delegate('.glyphicon-minus', 'click', function() {
+                var userID = $(this).parent().siblings().filter(".userID").val();
+                //alert(userID);
+                var cur = users.get(userID);
+                //alert('delete:'+cur.get('id'));
+                view.delUser(userID);
+                //cur.destroy();
+                var tr = $(this).parent().parent();
+                tr.remove();
+                //cur.set('name', 'Yingxi');
+               //
+          });
+          $(".userName").bind({
+                click:
+                    function() {
+                        var userID = $(this).siblings().filter(".userID").val();
+                        //alert(userID);
+                        var cur = users.get(userID);
+                         //alert(cur);
+                        $(this).empty();
+                        $(this).append("<input type='text' class='form-control' name='updateUsername' value="+cur.get('name')+">");
+                        $(this).children().filter("input[type='text'][name='updateUsername']").focus(function(){
+                                //alert('html:'+$(this).html());
+                                //console.log('focus'+$(this).val());
+                               
+                        });
+                        
+                       $(this).children().filter("input[type='text'][name='updateUsername']").focus(); $(this).children().filter("input[type='text'][name='updateUsername']").blur(function(){
+                       
+                                if (window.confirm('save?')){
+                                    cur.set({'name':$(this).val()});
+                                    //alert('save data:'+cur.save());
+                                    cur.save();
+                                    users.add(cur);
+                                    //$(this).parent().text(cur.get('name'));
+                                    //alert($(this).parent().text());// = cur.get('name');
+                                    //$(this).remove();
+                                }
+                                window.location.reload();
+                        });
+                        
+                    }
+          });
+          $(".userRegDate").bind({
+                click:
+                    function() {
+                        var userID = $(this).siblings().filter(".userID").val();
+                        //alert(userID);
+                        var cur = users.get(userID);
+                         //alert(cur);
+                        $(this).empty();
+                        $(this).append("<input type='text' class='form-control' name='updateUserRegDate' value="+cur.get('regDate')+">");
+                        $(this).children().filter("input[type='text'][name='updateUserRegDate']").focus(function(){
+                                //alert('html:'+$(this).html());
+                                //console.log('focus'+$(this).val());
+                               
+                        });
+                        
+                       $(this).children().filter("input[type='text'][name='updateUserRegDate']").focus();  $(this).children().filter("input[type='text'][name='updateUserRegDate']").blur(function(){
+                                if (window.confirm('save?')){
+                                //alert($(this).val());
+                                cur.set({'regDate':$(this).val()});
+                                //alert('save data:'+cur.save());
+                                cur.save();
+                                users.add(cur);
+                                //alert(cur.get('regDate'));
+                                //$(this).parent().text(cur.get('regDate'));
+                                //alert($(this).parent().text());// = cur.get('regDate');
+                                //$(this).remove();
+                                }
+                               window.location.reload();
+                        });
+                        
+                    }
+          });
+         /* Backbone.sync = function(method, model){
+                    alert(method+":" + JSON.stringify(model.get('name')));
+                    if (method == "create"){
+                        $.ajax({
+                            type : "POST",
+                            url : "/users",
+                            data : {
+                                "id" : model.get('id'),
+                                "name" : model.get('name'),
+                                "regDate" : model.get('regDate'),
+                                "role" : model.get('role')
+                            },
+                            dataType : "JSONP",
+                            success : function(data) {
+                                alert('succeed');
+                            }
+                        })
+                    }
+                    
+                    if (method == "update"){
+                        $.ajax({
+                            type : "POST",
+                            url : "/users/updateUser",
+                            data : {
+                                "id" : model.get('id'),
+                                "name" : model.get('name'),
+                                "regDate" : model.get('regDate'),
+                                "role" : model.get('role')
+                            },
+                            dataType : "JSONP",
+                            success : function(data) {
+                                alert('succeed');
+                            }
+                        })
+                    }
+          };*/
+          $("#test").on("click", function(){
+                    view.addUsr();
+                    /*var userAdded = new UserFactory();
+                    console.log('domain:'+window.location.domain);
+                    console.log('host:'+window.location.host);
+                    console.log('href:'+window.location.href);
+                    
+                    window.location.href = 'http://'+window.location.host+'/#/userstest/'+userAdded;*/
+          });
+        }
+      )
+    script(type="text/javascript").
+        function confirmAdd(){
+                 alert('confirmed');
+                 view.confirmAdd();
+                 //alert('new:'+newUser.get('id')+' '+newUser.get('name'));
+                // window.location.reload(true);
+        }
+        function showPunchInfo(){
+            //alert('showPunchInfo');
+            $('#punchBtn').hide();
+            //$("#punchContent").empty();
+            $("#punchContent").append(
+                            "<input id='datePicker' type='text' class='form-control' placeholder='点击选择日期'>"
+                            +"<input id='memo' type='text' class='form-control' placeholder='说点什么吧'>"
+                            +"<input class='btn btn-danger' id='confirmPunch' type='button' value='punch now!~'>");
+            $("#datePicker").click(
+                    function(){
+                        $(this).datetimepicker({
+                                show:true
+                        });
+                    });
+            $("#confirmPunch").click(function(){
+                //alert('the date  choosed is '+new Date($("#datePicker").val()));
+                //alert('the memo is '+$("#memo").val());
+                //Date transDate = new Date($("#datePicker").val());
+                $.ajax({
+                    url: "/punch",
+                    type: "POST",
+                    data:{
+                        "memo": $("#memo").val(),
+                        "punchDate": new Date($("#datePicker").val())
+                    }
+                }).success(function(){
+                    alert("punch done!!!Thank you");
+                }).error(function(){
+                    alert("something wrong");
+                })
+            });
+        }
+        function initTimePanel(){
+        }
+        function showDatePanel(){
+                var timePoints = [];
+                initTimePanel();
+                $('#datePanel').show(function () {
+                    //alert('showed');
+                    $.ajax({
+                        type: "GET",
+                        url: "/punch"
+                        
+                    }).success(function (data){
+                        
+                        $.each(data, function(i, item){
+                            var json = {};
+                            json.id = i;
+                            json.name = item.memo;
+                            json.on = new Date(item.punchDate);
+                            timePoints.push(json);
+                            var test = new Date(timePoints[i].on);
+                            //alert('test date'+ test);
+                            //alert('full year'+test.getFullYear());
+                            //alert('xiba'+timePoints[0].on);
+                        });
+                        $('#longTimeLine').empty();
+                        $('#longTimeLine').jqtimeline({
+                            events: timePoints,
+                            numYears: 1,
+                            startYear: 2015,
+                            gap: 25,
+                            click: function(e, event) {
+                                loadPage(event);
+                            }
+                        }); 
+                        
+                    });
+                });
+                
+        }
+        function closeDatePanel(){
+            $("#datePanel").hide();
+        }
+
+    script(type="text/javascript").
+      $(function(){
+            //  字符验证        
+            jQuery.validator.addMethod( "stringCheck" ,  function (value, element)  {      
+                            var isCharacter = true;
+                            for (var i = 0; i < value.length; i ++){
+                                if (!( value[i] == ' ' || value[i]>='a' && value[i]<='z' || value[i]>='A' && value[i]<='Z')){
+                                    isCharacter = false;
+                                    break;
+                                }
+                            }
+                            return this.optional(element) || isCharacter;       
+            } ,  " 只能包括英文字母" );   
+            $("#typeSelect").change(function (){
+               var judType = $("#typeSelect").val();
+               //alert(judType);
+               $("#validateText").attr("name", judType);
+            })
+            $("#validateForm").validate({  
+               //debug: true,
+               rules: {  
+                   string: {
+                        required: true,
+                        stringCheck: true
+                   },  
+                   email: {  
+                        required: true,  
+                        email: true  
+                   },  
+                   number: {
+                        number:true,
+                        required: true,  
+                        minlength: 5  
+                   }
+                },  
+               messages: {  
+                        
+               }  
+             });
+      })
   body
     block content

@@ -48,12 +48,10 @@ app.post('/punch', punchRoutes.doAddTimePoint);
 app.get('/punch', punchRoutes.getTimePoint);
 app.get('/punchReset',punchRoutes.reset);
 //mongoose
-mongoose.connect('mongodb://zhangyingxi:987654@ds063140.mongolab.com:63140/zyxmongolab');  //2
-//mongoose.connect('mongodb://localhost:27017');
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
+//mongoose.connect('mongodb://zhangyingxi:987654@ds063140.mongolab.com:63140/zyxmongolab');  //2
+mongoose.connect('mongodb://localhost:27017');
+http.createServer(app).listen(app.get('port'));
+console.log('Express server is listening on port ' + app.get('port'));
 module.exports = app;
 var app = express();
 
