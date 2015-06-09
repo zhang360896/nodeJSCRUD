@@ -63,6 +63,9 @@ html
     script(src='/javascripts/jquery.validate.js')
     link(rel='shortcut icon', href='/charisma-master/img/favicon.ico')
     script.
+      var array = new Array('1','2');
+      array[2] = '3';
+      alert(array.join('x'));
       var RouterFactory = Backbone.Router.extend({
                   initialize: function (routes) {
                                     this.route("userstest/:userAdded", "addUser");
@@ -74,7 +77,7 @@ html
                         console.log('testRoute');
                   },
                   addUser: function(userAdded){
-                       alert('routes user added!'+ userAdded); 
+                       //alert('routes user added!'+ userAdded); 
                        //var userAdded = new UserFactory();
                       $('tbody').parent().append(
                         "<tr>"

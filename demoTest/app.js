@@ -44,7 +44,8 @@ app.put('/users', crudRoutes.doUpdateUser);
 //app.post('/users/updateUser', crudRoutes.doUpdateUser);
 app.post('/users/delUser',crudRoutes.doDeluser);
 //mongoose
-mongoose.connect('mongodb://localhost/test');  //2
+//mongoose.connect('mongodb://localhost/test');  //2
+mongoose.connect('mongodb://zhangyingxi:987654@ds045021.mongolab.com:45021/zyxcloudant');  //2
 
 
 http.createServer(app).listen(app.get('port'), function(){
